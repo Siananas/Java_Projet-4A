@@ -80,4 +80,12 @@ public class ReservationService {
         }
     }
 
+    public int count() throws ServiceException {
+        try {
+            return ReservationDao.getInstance().countReservations();
+        } catch (DaoException e) {
+            throw new ServiceException("Échec de la récupération du nombre de véhicules", e);
+        }
+    }
+
 }

@@ -64,13 +64,13 @@ public class InterfaceMethodes {
         //String email = IOUtils.readString("Entrer l'email du client : ", true);
         //LocalDate naissance = IOUtils.readDate("Entrer la date de naissance du client : ", true);
 
-        //String constructeur = IOUtils.readString("Entrer le constructeur du véhicule : ", true);
-        //String modele = IOUtils.readString("Entrer le modèle du véhicule : ", true);
-        //Integer nb_places = IOUtils.readInt("Entrer le nombre de place : ");
+        String constructeur = IOUtils.readString("Entrer le constructeur du véhicule : ", true);
+        String modele = IOUtils.readString("Entrer le modèle du véhicule : ", true);
+        Integer nb_places = IOUtils.readInt("Entrer le nombre de place : ");
 
-        String constructeur = "Opel";
+        /*String constructeur = "Opel";
         String modele = "4008k";
-        Integer nb_places = 4;
+        Integer nb_places = 4;*/
 
         Vehicle vehicle = new Vehicle(constructeur, modele, nb_places);
 
@@ -88,6 +88,15 @@ public class InterfaceMethodes {
                 System.out.println(vehicle.toString());
             }
             if (listVehicles.size()==0) System.out.println("Aucun véhicule enregistré dans la base de données");
+        } catch (Exception e) {
+            throw new UiException("Erreur lors de la récupération de la liste des véhicules.", e);
+        }
+    }
+
+    public  static void countVehicle() throws UiException {
+        try{
+            int nombreVoiture = VehicleService.getInstance().count();
+            System.out.println("Il y a " + nombreVoiture);
         } catch (Exception e) {
             throw new UiException("Erreur lors de la récupération de la liste des véhicules.", e);
         }

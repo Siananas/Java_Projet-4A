@@ -25,6 +25,14 @@ public class VehicleService {
 		return instance;
 	}
 
+	public int count() throws ServiceException {
+		try {
+			return vehicleDao.countVehicles();
+		} catch (DaoException e) {
+			throw new ServiceException("Échec de la récupération du nombre de véhicules", e);
+		}
+	}
+
 	public long create(Vehicle vehicle) throws ServiceException {
 		try {
 			if (!vehicle.getConstructeur().isEmpty() && vehicle.getNb_places() > 1) {

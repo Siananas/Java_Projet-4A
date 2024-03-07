@@ -24,6 +24,7 @@ public class Main {
         System.out.println("10. Trouver les réservations par ID de véhicule");
         System.out.println("11. Trouver une réservation par ID");
         System.out.println("12. Supprimer une réservation");
+        System.out.println("13. Compter le nombre de vehicule");
         System.out.println("0. Quitter");
         System.out.print("Choisissez une option : ");
 
@@ -64,6 +65,9 @@ public class Main {
                 break;
             case 12:
                 InterfaceMethodes.deleteReservation();
+                break;
+            case 13:
+                InterfaceMethodes.countVehicle();
                 break;
 
             default:

@@ -3,6 +3,8 @@ package com.epf.rentmanager.service;
 import java.util.List;
 
 import com.epf.rentmanager.dao.ClientDao;
+import com.epf.rentmanager.dao.ReservationDao;
+import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
 
@@ -59,5 +61,11 @@ public class ClientService {
 		}
 		return 0;
 	}
-	
+	public int count() throws ServiceException {
+		try {
+			return ClientDao.getInstance().countClients();
+		} catch (DaoException e) {
+			throw new ServiceException("Échec de la récupération du nombre de véhicules", e);
+		}
+	}
 }
