@@ -1,6 +1,7 @@
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\Main.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\model\Vehicle.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\service\VehicleService.java
+C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\servlet\ClientListServlet.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\dao\VehicleDao.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\persistence\FillDatabase.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\dao\ReservationDao.java
@@ -8,6 +9,7 @@ C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentma
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\exception\UiException.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\service\ClientService.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\service\ReservationService.java
+C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\servlet\ClientCreateServlet.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\servlet\VehicleCreateServlet.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\exception\DaoException.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\model\Reservation.java

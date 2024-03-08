@@ -97,7 +97,6 @@ public class VehicleDao {
 
 	public List<Vehicle> findAll() throws DaoException {
 		try{
-			System.out.println("lancement 3");
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement ps = connection.prepareStatement(FIND_VEHICLES_QUERY);
 

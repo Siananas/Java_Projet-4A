@@ -24,6 +24,12 @@ public class Client {
         this.naissance = naissance ;
     }
 
+    public Client(String nom, String prenom, String email) {
+        this.nom = nom ;
+        this.prenom = prenom ;
+        this.email = email ;
+    }
+
     public Integer getId() {
         return id;
     }
