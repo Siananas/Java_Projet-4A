@@ -35,11 +35,11 @@
                                     <th>Action</th>
                                 </tr>
                                 <tr>
-                                    <td>1.</td>
-                                    <td>Renault Clio</td>
-                                    <td>John Doe</td>
-                                    <td>10/01/2019</td>
-                                    <td>13/01/2019</td>
+                                    <c:forEach items="${reservations}" var="reservation">
+                                        <td>${reservation.client_id}</td>
+                                        <td>${reservation.vehicule_id}</td>
+                                        <td>${reservation.debut}</td>
+                                        <td>${reservation.fin}</td>
                                     <td>
                                         <a class="btn btn-primary disabled" href="${pageContext.request.contextPath}/cars?id=1">
                                             <i class="fa fa-play"></i>
@@ -52,6 +52,7 @@
                                         </a>
                                     </td>
                                 </tr>
+                                </c:forEach>
 
                                 <tr>
                                     <td>2.</td>

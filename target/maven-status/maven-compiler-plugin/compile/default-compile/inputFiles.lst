@@ -18,5 +18,7 @@ C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentma
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\persistence\ConnectionManager.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\model\Client.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\dao\ClientDao.java
+C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\servlet\ReservationListServlet.java
+C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\config\AppConfiguration.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\exception\ServiceException.java
 C:\Users\anais\Downloads\rentmanager\Java_Projet-4A\src\main\java\com\epf\rentmanager\servlet\VehicleListServlet.java

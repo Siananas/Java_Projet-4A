@@ -7,29 +7,31 @@ import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ClientService {
 
 	private ClientDao clientDao;
-	public static ClientService instance;
-	
-	private ClientService() {
-		this.clientDao = ClientDao.getInstance();
+	//public static ClientService instance;
+
+	private ClientService(ClientDao clientDao){
+		this.clientDao = clientDao;
 	}
-	
-	public static ClientService getInstance() {
-		if (instance == null) {
-			instance = new ClientService();
-		}
-		return instance;
-	}
+
+//	public static ClientService getInstance() {
+//		if (instance == null) {
+//			instance = new ClientService();
+//		}
+//		return instance;
+//	}
 	
 	
 	public long create(Client client) throws ServiceException {
 		try {
 			if (!client.getNom().isEmpty() && !client.getPrenom().isEmpty()) {
 				client.setNom(client.getNom().toUpperCase());
-				return ClientDao.getInstance().create(client);
+				return clientDao.create(client);
 			}
 		} catch(Exception e) {
 			throw new ServiceException() ;
@@ -39,7 +41,7 @@ public class ClientService {
 
 	public Client findById(int id) throws ServiceException {
 		try{
-			return ClientDao.getInstance().findById(id);
+			return clientDao.findById(id);
 		} catch (Exception e){
 			throw new ServiceException();
 		}
@@ -47,7 +49,7 @@ public class ClientService {
 
 	public List<Client> findAll() throws ServiceException {
 		try{
-			return ClientDao.getInstance().findAll();
+			return clientDao.findAll();
 		} catch (Exception e){
 			throw new ServiceException();
 		}
@@ -55,7 +57,7 @@ public class ClientService {
 
 	public long delete(Client client) throws ServiceException {
 		try {
-			ClientDao.getInstance().delete(client) ;
+			clientDao.delete(client) ;
 		} catch(Exception e) {
 			throw new ServiceException() ;
 		}
@@ -63,7 +65,7 @@ public class ClientService {
 	}
 	public int count() throws ServiceException {
 		try {
-			return ClientDao.getInstance().countClients();
+			return clientDao.countClients();
 		} catch (DaoException e) {
 			throw new ServiceException("Échec de la récupération du nombre de véhicules", e);
 		}

@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 @WebServlet("/users/create")
 public class ClientCreateServlet extends HttpServlet {
 
-    ClientService clientService = ClientService.getInstance();
+    //ClientService clientService = ClientService;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
@@ -37,7 +37,7 @@ public class ClientCreateServlet extends HttpServlet {
             LocalDate naissance = LocalDate.parse(request.getParameter("naissance"));
 
             Client client = new Client(nom, prenom, email, naissance) ;
-            clientService.create(client);
+            //clientService.create(client);
 
             response.sendRedirect(request.getContextPath() + "/users/list");
 

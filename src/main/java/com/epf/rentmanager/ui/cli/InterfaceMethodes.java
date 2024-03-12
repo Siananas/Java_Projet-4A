@@ -1,5 +1,6 @@
 package com.epf.rentmanager.ui.cli;
 
+import com.epf.rentmanager.config.AppConfiguration;
 import com.epf.rentmanager.dao.ClientDao;
 import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.dao.VehicleDao;
@@ -12,13 +13,24 @@ import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
 import com.epf.rentmanager.utils.IOUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class InterfaceMethodes {
-    public static void CreateClient() throws UiException {
+    private ClientService clientService;
+
+    public InterfaceMethodes() {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
+        this.clientService = context.getBean(ClientService.class);
+    }
+
+
+    public void CreateClient() throws UiException {
         //String nom = IOUtils.readString("Entrer le nom du client : ", true);
         //String prenom = IOUtils.readString("Entrer le prénom du client : ", true);
         //String email = IOUtils.readString("Entrer l'email du client : ", true);
@@ -31,16 +43,16 @@ public class InterfaceMethodes {
 
         Client client = new Client(nom, prenom, email, naissance) ;
         try {
-            ClientService.getInstance().create(client);
+            clientService.create(client);
         } catch (ServiceException e) {
             throw new UiException("Erreur lors de la création du client.", e);
         }
     }
 
-    public  static void findAllClients() throws UiException {
+    public void findAllClients() throws UiException {
         try{
             List <Client> listClients = new ArrayList<>() ;
-            listClients = ClientDao.getInstance().findAll();
+            listClients = clientService.findAll();
             for (Client client : listClients){
                 System.out.println(client.toString());
             }
@@ -50,15 +62,21 @@ public class InterfaceMethodes {
         }
     }
 
-    public static void findClientById() throws UiException {
-        try{
-            Integer nb_places = IOUtils.readInt("Entrer le nombre de place : ");
-        } catch (Exception e){
-            throw new UiException("Erreur lors de la récupération du client.", e);
+    public void findClientById() throws UiException {
+        Integer clientId = IOUtils.readInt("Entrer l'identifiant du client : ");
+        try {
+            Client client = clientService.findById(clientId);
+            if (client != null) {
+                System.out.println(client.toString());
+            } else {
+                System.out.println("Aucun client trouvé avec l'identifiant spécifié.");
+            }
+        } catch (Exception e) {
+            throw new UiException("Erreur lors de la récupération des informations du client.", e);
         }
     }
 
-    public static void CreateVehicle() throws UiException {
+    public void CreateVehicle() throws UiException {
         //String nom = IOUtils.readString("Entrer le nom du client : ", true);
         //String prenom = IOUtils.readString("Entrer le prénom du client : ", true);
         //String email = IOUtils.readString("Entrer l'email du client : ", true);
@@ -80,6 +98,21 @@ public class InterfaceMethodes {
             throw new UiException("Erreur lors de la création du véhicule.", e);
         }
     }
+
+    public static void findVehicleById() throws UiException {
+        Integer vehicleId = IOUtils.readInt("Entrer l'identifiant du véhicule : ");
+        try {
+            Vehicle vehicle = VehicleService.getInstance().findById(vehicleId);
+            if (vehicle != null) {
+                System.out.println(vehicle.toString());
+            } else {
+                System.out.println("Aucun véhicule trouvé avec l'identifiant spécifié.");
+            }
+        } catch (Exception e) {
+            throw new UiException("Erreur lors de la récupération des informations du véhicule.", e);
+        }
+    }
+
     public  static void findAllVehicles() throws UiException {
         try{
             List <Vehicle> listVehicles = new ArrayList<>() ;
@@ -130,7 +163,7 @@ public class InterfaceMethodes {
         //LocalDate naissance = IOUtils.readDate("Entrer la date de naissance du client : ", true);
 
         Integer idClient = 1;
-        Integer idVehicle = 1;
+        Integer idVehicle = 2;
         LocalDate debut = LocalDate.of(2014, 4, 28);
         LocalDate fin = LocalDate.of(2014, 4, 29);
 

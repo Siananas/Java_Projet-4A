@@ -20,7 +20,7 @@ public class HomeServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private VehicleService vehicleService = VehicleService.getInstance();
-	private ClientService clientService = ClientService.getInstance();
+	//private ClientService clientService = ClientService.getInstance();
 	private ReservationService reservationService = ReservationService.getInstance();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,8 +29,8 @@ public class HomeServlet extends HttpServlet {
 			int nombreVehicles = vehicleService.count();
 			request.setAttribute("nombreVehicles", nombreVehicles);
 
-			int nombreClients = clientService.count();
-			request.setAttribute("nombreClients", nombreClients);
+			//int nombreClients = clientService.count();
+			//request.setAttribute("nombreClients", nombreClients);
 
 			int nombreReservations = reservationService.count();
 			request.setAttribute("nombreReservations", nombreReservations);
