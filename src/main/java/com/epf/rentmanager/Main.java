@@ -56,34 +56,34 @@ public class Main {
                 interfaceMethodes.CreateVehicle();
                 break;
             case 6:
-                InterfaceMethodes.findVehicleById();
+                interfaceMethodes.findVehicleById();
                 break;
             case 7:
-                InterfaceMethodes.findAllVehicles();
+                interfaceMethodes.findAllVehicles();
                 break;
             case 8:
                 // InterfaceMethodes.deleteVehicule();
                 break;
             case 9:
-                InterfaceMethodes.CreateReservation();
+                interfaceMethodes.CreateReservation();
                 break;
             case 10:
-                InterfaceMethodes.findReservationById();
+                interfaceMethodes.findReservationById();
                 break;
             case 11:
-                InterfaceMethodes.findReservationsByClientId();
+                interfaceMethodes.findReservationsByClientId();
                 break;
             case 12:
-                InterfaceMethodes.findReservationsByVehicleId();
+                interfaceMethodes.findReservationsByVehicleId();
                 break;
             case 13:
-                InterfaceMethodes.findAllReservations();
+                interfaceMethodes.findAllReservations();
                 break;
             case 14:
-                InterfaceMethodes.deleteReservation();
+                interfaceMethodes.deleteReservation();
                 break;
             case 15:
-                InterfaceMethodes.countVehicle();
+                interfaceMethodes.countVehicle();
                 break;
             case 0:
                 System.out.println("Merci d'avoir utilisé le programme. Au revoir !");

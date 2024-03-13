@@ -36,6 +36,7 @@
                                 </tr>
                                 <tr>
                                     <c:forEach items="${reservations}" var="reservation">
+                                        <td>${reservation.id}</td>
                                         <td>${reservation.client_id}</td>
                                         <td>${reservation.vehicule_id}</td>
                                         <td>${reservation.debut}</td>
