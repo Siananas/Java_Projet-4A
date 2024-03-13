@@ -23,12 +23,15 @@ import java.util.List;
 
 public class InterfaceMethodes {
     private ClientService clientService;
+    private VehicleService vehicleService ;
+    private ReservationService reservationService ;
 
     public InterfaceMethodes() {
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
         this.clientService = context.getBean(ClientService.class);
+        this.vehicleService = context.getBean(VehicleService.class);
+        this.reservationService = context.getBean(ReservationService.class);
     }
-
 
     public void CreateClient() throws UiException {
         //String nom = IOUtils.readString("Entrer le nom du client : ", true);
@@ -93,16 +96,17 @@ public class InterfaceMethodes {
         Vehicle vehicle = new Vehicle(constructeur, modele, nb_places);
 
         try {
-            VehicleService.getInstance().create(vehicle);
+            vehicleService.create(vehicle);
         } catch (ServiceException e) {
             throw new UiException("Erreur lors de la création du véhicule.", e);
         }
     }
 
-    public static void findVehicleById() throws UiException {
+    public void findVehicleById() throws UiException {
         Integer vehicleId = IOUtils.readInt("Entrer l'identifiant du véhicule : ");
         try {
-            Vehicle vehicle = VehicleService.getInstance().findById(vehicleId);
+            Vehicle vehicle = new Vehicle();
+            vehicle = vehicleService.findById(vehicleId);
             if (vehicle != null) {
                 System.out.println(vehicle.toString());
             } else {
@@ -113,10 +117,10 @@ public class InterfaceMethodes {
         }
     }
 
-    public  static void findAllVehicles() throws UiException {
+    public void findAllVehicles() throws UiException {
         try{
             List <Vehicle> listVehicles = new ArrayList<>() ;
-            listVehicles = VehicleDao.getInstance().findAll();
+            listVehicles = vehicleService.findAll();
             for (Vehicle vehicle : listVehicles){
                 System.out.println(vehicle.toString());
             }
@@ -126,9 +130,9 @@ public class InterfaceMethodes {
         }
     }
 
-    public  static void countVehicle() throws UiException {
+    public void countVehicle() throws UiException {
         try{
-            int nombreVoiture = VehicleService.getInstance().count();
+            int nombreVoiture = vehicleService.count();
             System.out.println("Il y a " + nombreVoiture);
         } catch (Exception e) {
             throw new UiException("Erreur lors de la récupération de la liste des véhicules.", e);
@@ -143,10 +147,10 @@ public class InterfaceMethodes {
         }
     }
 
-    public  static void findAllReservations() throws UiException {
+    public void findAllReservations() throws UiException {
         try{
             List <Reservation> listReservations = new ArrayList<>() ;
-            listReservations = ReservationDao.getInstance().findAll();
+            listReservations = reservationService.findAll();
             for (Reservation reservation : listReservations){
                 System.out.println(reservation.toString());
             }
@@ -156,7 +160,7 @@ public class InterfaceMethodes {
         }
     }
 
-    public static void CreateReservation() throws UiException {
+    public void CreateReservation() throws UiException {
         //String nom = IOUtils.readString("Entrer le nom du client : ", true);
         //String prenom = IOUtils.readString("Entrer le prénom du client : ", true);
         //String email = IOUtils.readString("Entrer l'email du client : ", true);
@@ -169,17 +173,17 @@ public class InterfaceMethodes {
 
         Reservation reservation = new Reservation(idClient, idVehicle, debut, fin) ;
         try {
-            ReservationService.getInstance().create(reservation);
+            reservationService.create(reservation);
         } catch (ServiceException e) {
             throw new UiException("Erreur lors de la création du client.", e);
         }
     }
 
-    public  static void findReservationsByClientId() throws UiException {
+    public void findReservationsByClientId() throws UiException {
         Integer clientId = IOUtils.readInt("Entrer l'identifiant du client' : ");
         try{
             List <Reservation> listReservations = new ArrayList<>() ;
-            listReservations = ReservationDao.getInstance().findResaByClientId(clientId);
+            listReservations = reservationService.findByClientId(clientId);
             for (Reservation reservation : listReservations){
                 System.out.println(reservation.toString());
             }
@@ -189,11 +193,11 @@ public class InterfaceMethodes {
         }
     }
 
-    public  static void findReservationsByVehicleId() throws UiException {
+    public void findReservationsByVehicleId() throws UiException {
         Integer vehicleId = IOUtils.readInt("Entrer l'identifiant du véhicule' : ");
         try{
             List <Reservation> listReservations = new ArrayList<>() ;
-            listReservations = ReservationDao.getInstance().findResaByVehicleId(vehicleId);
+            listReservations = reservationService.findByVehicleId(vehicleId);
             for (Reservation reservation : listReservations){
                 System.out.println(reservation.toString());
             }
@@ -203,20 +207,20 @@ public class InterfaceMethodes {
         }
     }
 
-    public  static void deleteReservation() throws UiException {
+    public void deleteReservation() throws UiException {
         try{
             Reservation reservation = new Reservation() ;
-            reservation = ReservationService.findReservationById(1);
-            ReservationService.delete(reservation);
+            reservation = reservationService.findReservationById(1);
+            reservationService.delete(reservation);
         } catch (Exception e) {
             throw new UiException("Erreur lors de la récupération de la liste des reservations.", e);
         }
     }
 
-    public  static void findReservationById() throws UiException {
+    public void findReservationById() throws UiException {
         try{
             Reservation reservation = new Reservation() ;
-            reservation = ReservationService.findReservationById(1);
+            reservation = reservationService.findReservationById(1);
             System.out.println(reservation.toString());
         } catch (Exception e) {
             throw new UiException("Erreur lors de la récupération de la liste des reservations.", e);

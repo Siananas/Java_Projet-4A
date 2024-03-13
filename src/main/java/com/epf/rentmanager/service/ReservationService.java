@@ -9,72 +9,67 @@ import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ReservationService {
 
     private ReservationDao reservationDao;
-    public static ReservationService instance;
 
-    private ReservationService() {
-        this.reservationDao = ReservationDao.getInstance();
+    private ReservationService(ReservationDao reservationDao) {
+        this.reservationDao = reservationDao;
     }
 
-    public static ReservationService getInstance() {
-        if (instance == null) {
-            instance = new ReservationService();
-        }
-        return instance;
-    }
 
-    public static void create(Reservation reservation) throws ServiceException {
+    public void create(Reservation reservation) throws ServiceException {
         try {
-            ReservationDao.getInstance().create(reservation);
+            reservationDao.create(reservation);
         } catch (DaoException e) {
             throw new ServiceException("Échec de la création de  la reservation : " + reservation.toString(), e);
         }
     }
 
-    public static Reservation findReservationById(int reservationId) throws ServiceException {
+    public Reservation findReservationById(int reservationId) throws ServiceException {
         try {
-            return ReservationDao.getInstance().findReservationById(reservationId);
+            return reservationDao.findReservationById(reservationId);
         } catch (Exception e) {
             throw new ServiceException("Échec de la recherche des reservations avec l'ID client : " + reservationId, e);
         }
     }
 
-    public static List<Reservation> findByClientId(int clientId) throws ServiceException {
+    public List<Reservation> findByClientId(int clientId) throws ServiceException {
         try {
             List<Reservation> listeReservation = new ArrayList<>();
-            listeReservation = ReservationDao.getInstance().findResaByClientId(clientId);
+            listeReservation = reservationDao.findResaByClientId(clientId);
             return listeReservation ;
         } catch (Exception e) {
             throw new ServiceException("Échec de la recherche des reservations avec l'ID client : " + clientId, e);
         }
     }
 
-    public static List<Reservation> findByVehicleId(int vehicleId) throws ServiceException {
+    public List<Reservation> findByVehicleId(int vehicleId) throws ServiceException {
         try {
             List<Reservation> listeReservation = new ArrayList<>();
-            listeReservation = ReservationDao.getInstance().findResaByVehicleId(vehicleId);
+            listeReservation = reservationDao.findResaByVehicleId(vehicleId);
             return listeReservation ;
         } catch (Exception e) {
             throw new ServiceException("Échec de la recherche des reservations avec l'ID véhicule: " + vehicleId, e);
         }
     }
 
-    public static List<Reservation> findAll() throws ServiceException {
+    public List<Reservation> findAll() throws ServiceException {
         try {
             List<Reservation> listeReservation = new ArrayList<>();
-            listeReservation = ReservationDao.getInstance().findAll();
+            listeReservation = reservationDao.findAll();
             return listeReservation ;
         } catch (Exception e) {
             throw new ServiceException("Échec de la récupération des reservations", e);
         }
     }
 
-    public static void delete(Reservation reservation) throws ServiceException {
+    public void delete(Reservation reservation) throws ServiceException {
         try {
-            ReservationDao.getInstance().delete(reservation);
+            reservationDao.delete(reservation);
         } catch (Exception e) {
             throw new ServiceException("Échec de la suppression", e);
         }
@@ -82,7 +77,7 @@ public class ReservationService {
 
     public int count() throws ServiceException {
         try {
-            return ReservationDao.getInstance().countReservations();
+            return reservationDao.countReservations();
         } catch (DaoException e) {
             throw new ServiceException("Échec de la récupération du nombre de véhicules", e);
         }

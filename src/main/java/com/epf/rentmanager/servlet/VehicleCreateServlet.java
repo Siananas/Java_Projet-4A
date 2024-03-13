@@ -1,7 +1,10 @@
 package com.epf.rentmanager.servlet;
 
 import com.epf.rentmanager.model.Vehicle;
+import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.VehicleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,8 +16,15 @@ import java.io.IOException;
 
 @WebServlet("/vehicles/create")
 public class VehicleCreateServlet extends HttpServlet {
+    @Autowired
+            VehicleService vehicleService ;
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
 
-    private VehicleService vehicleService = VehicleService.getInstance();
+    //private VehicleService vehicleService = VehicleService.getInstance();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,17 +36,10 @@ public class VehicleCreateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
         try{
-            System.out.println("ts");
             String constructeur = request.getParameter("constructeur");
-            System.out.println("constructor");
-
             String modele = request.getParameter("modele");
-            System.out.println("modele");
-
             int nb_places = Integer.parseInt(request.getParameter("nb_places"));
-            System.out.println("nbmodele");
 
-            System.out.println(constructeur + modele + nb_places);
             Vehicle vehicule = new Vehicle(constructeur, modele, nb_places);
             vehicleService.create(vehicule);
 
