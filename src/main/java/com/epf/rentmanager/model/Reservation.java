@@ -10,6 +10,8 @@ public class Reservation {
     private Integer vehicule_id ;
     private LocalDate debut ;
     private LocalDate fin ;
+    private String client_nom;
+    private String vehicle_contructeur_modele;
 
     public Reservation (){}
 
@@ -48,6 +50,14 @@ public class Reservation {
         return fin;
     }
 
+    public String getClient_nom() {
+        return client_nom;
+    }
+
+    public String getVehicle_contructeur_modele() {
+        return vehicle_contructeur_modele;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -65,6 +75,14 @@ public class Reservation {
     }
 
     public void setFin(LocalDate fin) { this.fin = fin; }
+
+    public void setClient_nom(String client_nom) {
+        this.client_nom = client_nom;
+    }
+
+    public void setVehicle_contructeur_modele(String vehicle_contructeur_modele) {
+        this.vehicle_contructeur_modele = vehicle_contructeur_modele;
+    }
 
     @Override
     public String toString() {
