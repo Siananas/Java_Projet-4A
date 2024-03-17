@@ -166,7 +166,7 @@ public class InterfaceMethodes {
         //String email = IOUtils.readString("Entrer l'email du client : ", true);
         //LocalDate naissance = IOUtils.readDate("Entrer la date de naissance du client : ", true);
 
-        Integer idClient = 1;
+        Integer idClient = 2;
         Integer idVehicle = 2;
         LocalDate debut = LocalDate.of(2014, 4, 28);
         LocalDate fin = LocalDate.of(2014, 4, 29);

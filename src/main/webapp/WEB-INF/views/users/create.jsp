@@ -60,7 +60,7 @@
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <button type="submit" class="btn btn-info pull-right" href="${pageContext.request.contextPath}/users/list>Ajouter</button>
+                                <button type="submit" class="btn btn-info pull-right" href="${pageContext.request.contextPath}/users/list">Ajouter</button>
                             </div>
                             <!-- /.box-footer -->
                         </form>
