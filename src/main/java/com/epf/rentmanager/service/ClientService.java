@@ -7,6 +7,7 @@ import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
+import com.epf.rentmanager.model.Vehicle;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -68,6 +69,14 @@ public class ClientService {
 			return clientDao.countClients();
 		} catch (DaoException e) {
 			throw new ServiceException("Échec de la récupération du nombre de véhicules", e);
+		}
+	}
+
+	public List<Vehicle> findAllVehiclesOfClientReservations(Client client) throws ServiceException {
+		try {
+			return clientDao.findAllVehicleOfThisClientReservation(client);
+		} catch (DaoException e) {
+			throw new ServiceException("Échec de la récupération des véhicules réservés par le client " + client.getId(), e);
 		}
 	}
 }

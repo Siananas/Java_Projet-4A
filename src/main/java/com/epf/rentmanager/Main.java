@@ -33,6 +33,7 @@ public class Main {
         System.out.println("13. Trouver toutes les réservations");
         System.out.println("14. Supprimer une réservation");
         System.out.println("15. Compter le nombre de véhicules");
+        System.out.println("16. Afficher tous les véhicules réservé par un client");
         System.out.println("0. Quitter");
         System.out.print("Choisissez une option : ");
 
@@ -84,6 +85,9 @@ public class Main {
                 break;
             case 15:
                 interfaceMethodes.countVehicle();
+                break;
+            case 16:
+                interfaceMethodes.findAllVehiclesOfClientReservations();
                 break;
             case 0:
                 System.out.println("Merci d'avoir utilisé le programme. Au revoir !");

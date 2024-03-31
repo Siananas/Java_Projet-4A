@@ -1,10 +1,12 @@
 package com.epf.rentmanager.dao;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.epf.rentmanager.exception.DaoException;
+import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.persistence.ConnectionManager;
 import org.springframework.stereotype.Repository;
@@ -20,6 +22,8 @@ public class VehicleDao {
 	private static final String FIND_VEHICLE_QUERY = "SELECT id, constructeur, modele, nb_places FROM Vehicle WHERE id=?;";
 	private static final String FIND_VEHICLES_QUERY = "SELECT id, constructeur, modele, nb_places FROM Vehicle;";
 	private static final String COUNT_VEHICLES_QUERY = "SELECT COUNT(*) FROM Vehicle;" ;
+	private static final String FIND_CLIENTS_QUERY = "SELECT c.id, c.nom, c.prenom, c.email, c.naissance FROM Client c JOIN Reservation r ON c.id = r.client_id JOIN Vehicle v ON r.vehicle_id = v.id WHERE v.id = ?;" ;
+
 
 	public long create(Vehicle vehicle) throws DaoException {
 		try {
@@ -106,6 +110,10 @@ public class VehicleDao {
 				Integer nb_places = resultSet.getInt("nb_places");
 				listeVehicles.add(new Vehicle(id,constructeur,modele,nb_places));
 			}
+			resultSet.close();
+			ps.close();
+			connection.close();
+
 			return listeVehicles ;
 
 		} catch (SQLException e) {
@@ -131,6 +139,29 @@ public class VehicleDao {
 			throw new DaoException("Échec de la récupération du nombre de véhicules", e);
 		}
 		return count;
+	}
+
+	public List<Client> findAllClientsOfThisVehicleReservation(Vehicle vehicle) throws DaoException {
+		try {
+			Connection connection = ConnectionManager.getConnection();
+			PreparedStatement ps = connection.prepareStatement(FIND_CLIENTS_QUERY);
+			ps.setInt(1, vehicle.getId());
+			ResultSet resultSet = ps.executeQuery();
+			List<Client> listeClients = new ArrayList<>();
+
+			while(resultSet.next()) {
+				Integer id = resultSet.getInt("id");
+				String nom = resultSet.getString("nom");
+				String prenom = resultSet.getString("prenom");
+				String email = resultSet.getString("email");
+				LocalDate naissance = resultSet.getDate("naissance").toLocalDate(); // Assurez-vous que la conversion de java.sql.Date à LocalDate est correcte
+				listeClients.add(new Client(id, nom, prenom, email, naissance));
+			}
+			return listeClients;
+
+		} catch (Exception e) {
+			throw new DaoException("Échec de la récupération des clients ayant réservé le véhicule " + vehicle.getId(), e);
+		}
 	}
 
 }

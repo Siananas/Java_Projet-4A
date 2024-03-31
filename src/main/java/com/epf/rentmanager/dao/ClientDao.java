@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.model.Client;
+import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.persistence.ConnectionManager;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,7 @@ public class ClientDao {
 	private static final String FIND_CLIENT_QUERY = "SELECT nom, prenom, email, naissance FROM Client WHERE id=?;";
 	private static final String FIND_CLIENTS_QUERY = "SELECT id, nom, prenom, email, naissance FROM Client;";
 	private static final String COUNT_CLIENTS_QUERY = "SELECT COUNT(*) FROM Client;" ;
+	private static final String FIND_VEHICLE_QUERY = "SELECT v.id, v.constructeur, v.modele, v.nb_places FROM Vehicle v JOIN Reservation r ON v.id = r.vehicle_id JOIN Client c ON r.client_id = c.id WHERE c.id = ?;" ;
 
 	public long create(Client client) throws DaoException {
 		try {
@@ -141,4 +143,26 @@ public class ClientDao {
 		return count;
 	}
 
+	public List<Vehicle> findAllVehicleOfThisClientReservation(Client client) throws DaoException {
+
+		try {
+			Connection connection = ConnectionManager.getConnection();
+			PreparedStatement ps = connection.prepareStatement(FIND_VEHICLE_QUERY);
+			ps.setInt(1, client.getId());
+			ResultSet resultSet = ps.executeQuery();
+			List<Vehicle> listeVehicles = new ArrayList<>();
+
+			while(resultSet.next()) {
+				Integer id = resultSet.getInt("id");
+				String constructeur = resultSet.getString("constructeur");
+				String modele = resultSet.getString("modele");
+				Integer nb_places = resultSet.getInt("nb_places");
+				listeVehicles.add(new Vehicle(id,constructeur,modele,nb_places));
+			}
+			return listeVehicles ;
+
+		} catch (Exception e){
+			throw new DaoException("Échec de la récupération des véhicules réservés par le client " + client.getId(), e);
+		}
+	}
 }

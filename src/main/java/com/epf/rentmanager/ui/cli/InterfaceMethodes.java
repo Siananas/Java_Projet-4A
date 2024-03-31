@@ -226,4 +226,24 @@ public class InterfaceMethodes {
             throw new UiException("Erreur lors de la récupération de la liste des reservations.", e);
         }
     }
+
+    public void findAllVehiclesOfClientReservations() throws UiException {
+        Integer clientId = IOUtils.readInt("Entrer l'identifiant du client : ");
+        try {
+//            Client client = new Client(); // Supposons que Client a un constructeur qui accepte l'id
+//            client.setId(clientId);
+
+            List<Vehicle> vehicles = clientService.findAllVehiclesOfClientReservations(clientService.findById(clientId));
+
+            if (vehicles != null && !vehicles.isEmpty()) {
+                for (Vehicle vehicle : vehicles) {
+                    System.out.println(vehicle.toString());
+                }
+            } else {
+                System.out.println("Aucun véhicule trouvé pour les réservations de ce client.");
+            }
+        } catch (ServiceException e) {
+            throw new UiException("Erreur lors de la récupération des véhicules réservés par le client.", e);
+        }
+    }
 };

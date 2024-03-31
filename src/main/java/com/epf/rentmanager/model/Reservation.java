@@ -12,6 +12,7 @@ public class Reservation {
     private LocalDate fin ;
     private String client_nom;
     private String vehicle_contructeur_modele;
+    private String client_prenom_nom ;
 
     public Reservation (){}
 
@@ -58,6 +59,8 @@ public class Reservation {
         return vehicle_contructeur_modele;
     }
 
+    public String getClient_prenom_nom() { return client_prenom_nom; }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -82,6 +85,10 @@ public class Reservation {
 
     public void setVehicle_contructeur_modele(String vehicle_contructeur_modele) {
         this.vehicle_contructeur_modele = vehicle_contructeur_modele;
+    }
+
+    public void setClient_prenom_nom(String client_prenom_nom) {
+        this.client_prenom_nom = client_prenom_nom;
     }
 
     @Override
