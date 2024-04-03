@@ -23,6 +23,7 @@ public class VehicleDao {
 	private static final String FIND_VEHICLES_QUERY = "SELECT id, constructeur, modele, nb_places FROM Vehicle;";
 	private static final String COUNT_VEHICLES_QUERY = "SELECT COUNT(*) FROM Vehicle;" ;
 	private static final String FIND_CLIENTS_QUERY = "SELECT c.id, c.nom, c.prenom, c.email, c.naissance FROM Client c JOIN Reservation r ON c.id = r.client_id JOIN Vehicle v ON r.vehicle_id = v.id WHERE v.id = ?;" ;
+	private static final String UPDATE_VEHICLE_QUERY = "UPDATE Vehicle SET constructeur = ?, modele = ?, nb_places = ? WHERE id = ?;";
 
 
 	public long create(Vehicle vehicle) throws DaoException {
@@ -164,4 +165,19 @@ public class VehicleDao {
 		}
 	}
 
+	public boolean updateVehicle(Vehicle vehicle) throws DaoException {
+		try (Connection connection = ConnectionManager.getConnection();
+			 PreparedStatement ps = connection.prepareStatement(UPDATE_VEHICLE_QUERY)) {
+
+			ps.setString(1, vehicle.getConstructeur());
+			ps.setString(2, vehicle.getModele());
+			ps.setInt(3, vehicle.getNb_places());
+			ps.setInt(4, vehicle.getId());
+
+			int updatedRows = ps.executeUpdate();
+			return updatedRows > 0;
+		} catch (SQLException e) {
+			throw new DaoException("Échec de la mise à jour du véhicule " + vehicle.getId(), e);
+		}
+	}
 }

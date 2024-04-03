@@ -79,4 +79,12 @@ public class ClientService {
 			throw new ServiceException("Échec de la récupération des véhicules réservés par le client " + client.getId(), e);
 		}
 	}
+
+	public boolean updateClient(Client client) throws ServiceException {
+		try {
+			return clientDao.updateClient(client);
+		} catch (DaoException e) {
+			throw new ServiceException("Échec de la mise à jour du client avec l'id " + client.getId(), e);
+		}
+	}
 }

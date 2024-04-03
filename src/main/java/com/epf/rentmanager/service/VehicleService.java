@@ -65,4 +65,11 @@ public class VehicleService {
 		}
 	}
 
+	public boolean updateVehicle(Vehicle vehicle) throws ServiceException {
+		try {
+			return vehicleDao.updateVehicle(vehicle);
+		} catch (DaoException e) {
+			throw new ServiceException("Échec de la mise à jour du véhicule avec l'id " + vehicle.getId(), e);
+		}
+	}
 }

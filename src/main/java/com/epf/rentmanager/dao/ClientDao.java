@@ -26,6 +26,7 @@ public class ClientDao {
 	private static final String FIND_CLIENTS_QUERY = "SELECT id, nom, prenom, email, naissance FROM Client;";
 	private static final String COUNT_CLIENTS_QUERY = "SELECT COUNT(*) FROM Client;" ;
 	private static final String FIND_VEHICLE_QUERY = "SELECT v.id, v.constructeur, v.modele, v.nb_places FROM Vehicle v JOIN Reservation r ON v.id = r.vehicle_id JOIN Client c ON r.client_id = c.id WHERE c.id = ?;" ;
+	private static final String UPDATE_CLIENT_QUERY = "UPDATE Client SET nom = ?, prenom = ?, email = ?, naissance = ? WHERE id = ?;" ;
 
 	public long create(Client client) throws DaoException {
 		try {
@@ -163,6 +164,23 @@ public class ClientDao {
 
 		} catch (Exception e){
 			throw new DaoException("Échec de la récupération des véhicules réservés par le client " + client.getId(), e);
+		}
+	}
+
+	public boolean updateClient(Client client) throws DaoException {
+		try (Connection connection = ConnectionManager.getConnection();
+			 PreparedStatement ps = connection.prepareStatement(UPDATE_CLIENT_QUERY)) {
+
+			ps.setString(1, client.getNom());
+			ps.setString(2, client.getPrenom());
+			ps.setString(3, client.getEmail());
+			ps.setDate(4, Date.valueOf(client.getNaissance()));
+			ps.setInt(5, client.getId());
+
+			int updatedRows = ps.executeUpdate();
+			return updatedRows > 0;
+		} catch (SQLException e) {
+			throw new DaoException("Échec de la mise à jour du client " + client.getId(), e);
 		}
 	}
 }

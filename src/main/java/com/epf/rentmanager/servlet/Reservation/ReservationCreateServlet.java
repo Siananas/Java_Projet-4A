@@ -1,10 +1,11 @@
-package com.epf.rentmanager.servlet;
+package com.epf.rentmanager.servlet.Reservation;
 
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.servlet.HomeServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @WebServlet("/rents/create")
-public class ReservationCreateServlet extends HomeServlet{
+public class ReservationCreateServlet extends HomeServlet {
     @Autowired
     ReservationService reservationService;
     @Autowired

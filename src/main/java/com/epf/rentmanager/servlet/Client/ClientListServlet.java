@@ -1,4 +1,4 @@
-package com.epf.rentmanager.servlet;
+package com.epf.rentmanager.servlet.Client;
 
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.VehicleService;

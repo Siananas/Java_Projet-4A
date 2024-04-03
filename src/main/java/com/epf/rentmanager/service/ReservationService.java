@@ -83,4 +83,11 @@ public class ReservationService {
         }
     }
 
+    public boolean updateReservation(Reservation reservation) throws ServiceException {
+        try {
+            return reservationDao.updateReservation(reservation);
+        } catch (DaoException e) {
+            throw new ServiceException("Échec de la mise à jour de la réservation avec l'id " + reservation.getId(), e);
+        }
+    }
 }
