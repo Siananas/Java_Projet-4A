@@ -46,7 +46,7 @@
                                         <a class="btn btn-success" href="${pageContext.request.contextPath}/users/edit?id=${client.id}">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger disabled" href="#">
+                                        <a class="btn btn-danger" href="${pageContext.request.contextPath}/users/list?action=delete&id=${client.id}" onclick="return confirm('Etes-vous sur de vouloir supprimer ce client ?');">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>

@@ -49,7 +49,7 @@
                                         <a class="btn btn-success" href="${pageContext.request.contextPath}/vehicles/edit?id=${vehicle.id}">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger" href="#">
+                                        <a class="btn btn-danger" href="${pageContext.request.contextPath}/vehicles/list?action=delete&id=${vehicle.id}" onclick="return confirm('Etes-vous sur de vouloir supprimer ce vehicule ?');">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>

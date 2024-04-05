@@ -21,6 +21,7 @@ public class ClientDao {
 	private ClientDao() {}
 	
 	private static final String CREATE_CLIENT_QUERY = "INSERT INTO Client(nom, prenom, email, naissance) VALUES(?, ?, ?, ?);";
+	private static final String DELETE_RESERVATIONS_FOR_CLIENT_QUERY = "DELETE FROM Reservation WHERE client_id = ?;";
 	private static final String DELETE_CLIENT_QUERY = "DELETE FROM Client WHERE id=?;";
 	private static final String FIND_CLIENT_QUERY = "SELECT nom, prenom, email, naissance FROM Client WHERE id=?;";
 	private static final String FIND_CLIENTS_QUERY = "SELECT id, nom, prenom, email, naissance FROM Client;";
@@ -86,16 +87,20 @@ public class ClientDao {
 		return null;
 	}
 	
-	public long delete(Client client) throws DaoException {
+	public int delete(Client client) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
-			PreparedStatement ps = connection.prepareStatement(DELETE_CLIENT_QUERY);
+			PreparedStatement ps_reservation = connection.prepareStatement(DELETE_RESERVATIONS_FOR_CLIENT_QUERY);
+			ps_reservation.setInt(1,client.getId());
+			ps_reservation.executeUpdate();
 
-			ps.setInt(1,client.getId());
-
-			return ps.executeUpdate() ;
+			PreparedStatement ps_client = connection.prepareStatement(DELETE_CLIENT_QUERY);
+			ps_client.setInt(1,client.getId());
+			int affectedRows = ps_client.executeUpdate();
+			return affectedRows;
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DaoException("Échec de la suppression du client avec l'ID : " + client.getId(), e);
 		}
 	}

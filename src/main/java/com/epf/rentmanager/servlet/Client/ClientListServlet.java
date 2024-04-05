@@ -23,8 +23,17 @@ public class ClientListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
         try{
-            request.setAttribute("clients", clientService.findAll());
+            String action = request.getParameter("action");
+            if ("delete".equals(action)) {
+                int clientId = Integer.parseInt(request.getParameter("id"));
+                clientService.delete(clientId);
+                response.setHeader("Refresh", "0; URL=" + request.getContextPath() + "/users/list");
+            }
+                request.setAttribute("clients", clientService.findAll());
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
+
+
+
         } catch (Exception e){
             throw new RuntimeException();
         }

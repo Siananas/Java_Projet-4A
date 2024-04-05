@@ -56,8 +56,10 @@ public class ClientService {
 		}
 	}
 
-	public long delete(Client client) throws ServiceException {
+	public long delete(int id) throws ServiceException {
 		try {
+			Client client = new Client();
+			client = clientDao.findById(id);
 			clientDao.delete(client) ;
 		} catch(Exception e) {
 			throw new ServiceException() ;

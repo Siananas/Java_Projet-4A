@@ -36,8 +36,14 @@ public class ReservationListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            List <Reservation> listeReservations = new ArrayList<>();
-            listeReservations = reservationService.findAll();
+            String action = request.getParameter("action");
+            if ("delete".equals(action)) {
+                int reservationId = Integer.parseInt(request.getParameter("id"));
+                reservationService.delete(reservationId);
+                response.setHeader("Refresh", "0; URL=" + request.getContextPath() + "/rents/list");
+            }
+
+            List <Reservation> listeReservations = reservationService.findAll();
             for (Reservation reservation : listeReservations){
                 String client_nom = clientService.findById(reservation.getClient_id())
                         .getNom();

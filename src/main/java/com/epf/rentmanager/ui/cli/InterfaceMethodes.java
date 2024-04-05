@@ -209,9 +209,7 @@ public class InterfaceMethodes {
 
     public void deleteReservation() throws UiException {
         try{
-            Reservation reservation = new Reservation() ;
-            reservation = reservationService.findReservationById(1);
-            reservationService.delete(reservation);
+            reservationService.delete(1);
         } catch (Exception e) {
             throw new UiException("Erreur lors de la récupération de la liste des reservations.", e);
         }

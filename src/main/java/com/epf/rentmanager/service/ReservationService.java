@@ -9,6 +9,7 @@ import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
+import com.epf.rentmanager.model.Vehicle;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -67,9 +68,13 @@ public class ReservationService {
         }
     }
 
-    public void delete(Reservation reservation) throws ServiceException {
+    public boolean delete(int reservationId) throws ServiceException {
         try {
-            reservationDao.delete(reservation);
+            Reservation reservation = reservationDao.findReservationById(reservationId);
+
+            int affectedRows = reservationDao.delete(reservation);
+            return affectedRows > 0;
+
         } catch (Exception e) {
             throw new ServiceException("Échec de la suppression", e);
         }

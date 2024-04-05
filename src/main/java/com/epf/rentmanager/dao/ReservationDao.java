@@ -27,9 +27,6 @@ public class ReservationDao {
 	private static final String FIND_RESERVATIONS_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation;";
 	private static final String COUNT_RESERVATIONS_QUERY = "SELECT COUNT(*) FROM Reservation;" ;
 	private static final String UPDATE_RESERVATION_QUERY = "UPDATE Reservation SET client_id = ?, vehicle_id = ?, debut = ?, fin = ? WHERE id = ?;";
-	//private static final String FIND_CLIENT_AND_VEHICLE_NAM = "SELECT v.id, v.constructeur, v.modele, v.nb_places FROM Vehicle v JOIN Reservation r ON v.id = r.vehicle_id JOIN Client c ON r.client_id = c.id WHERE c.id = ?;" ;
-	private static final String FIND_CLIENT_AND_VEHICLE_NAME = "SELECT v.constructeur, v.modele, c.nom, c.prenom FROM Reservation r JOIN Vehicle v ON r.vehicle_id = v.id JOIN Client c ON r.client_id = c.id WHERE r.id = ?;;" ;
-
 
 	public long create(Reservation reservation) throws DaoException {
 		try {
@@ -61,14 +58,15 @@ public class ReservationDao {
 		return -1 ;
 	}
 	
-	public long delete(Reservation reservation) throws DaoException {
+	public int delete(Reservation reservation) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement ps = connection.prepareStatement(DELETE_RESERVATION_QUERY);
 
 			ps.setInt(1,reservation.getId());
 
-			return ps.executeUpdate() ;
+			int affectedRows = ps.executeUpdate();
+			return affectedRows;
 
 		} catch (SQLException e){
 			throw new DaoException();

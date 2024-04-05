@@ -57,6 +57,17 @@ public class VehicleService {
 		}
 	}
 
+	public boolean delete(int vehicleId) throws ServiceException {
+		try {
+			Vehicle vehicle = vehicleDao.findById(vehicleId);
+			int affectedRows = vehicleDao.delete(vehicle);
+			return affectedRows > 0;
+
+		} catch (DaoException e) {
+			throw new ServiceException("Échec de la suppression du véhicule avec l'ID : " + vehicleId, e);
+		}
+	}
+
 	public List<Client> findAllClientsOfVehicleReservation(Vehicle vehicle) throws ServiceException {
 		try {
 			return vehicleDao.findAllClientsOfThisVehicleReservation(vehicle);
