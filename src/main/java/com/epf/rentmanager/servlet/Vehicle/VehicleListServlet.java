@@ -25,18 +25,14 @@ public class VehicleListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+
             String action = request.getParameter("action");
             if ("delete".equals(action)) {
                 int vehicleId = Integer.parseInt(request.getParameter("id"));
                 vehicleService.delete(vehicleId);
                 response.setHeader("Refresh", "0; URL=" + request.getContextPath() + "/vehicles/list");
             }
-
             request.setAttribute("vehicles", vehicleService.findAll());
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/list.jsp").forward(request, response);
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

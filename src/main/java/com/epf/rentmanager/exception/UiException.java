@@ -4,7 +4,7 @@ package com.epf.rentmanager.exception;
  * Exception spécifique à l'interface utilisateur dans l'application RentManager.
  * Utilisée pour signaler des erreurs survenant au niveau de l'interface utilisateur.
  */
-public class UiException extends Exception {
+public class UiException extends RuntimeException {
 
     public UiException() {
         super();

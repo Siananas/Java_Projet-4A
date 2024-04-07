@@ -24,26 +24,21 @@ public class VehicleCreateServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
-    //private VehicleService vehicleService = VehicleService.getInstance();
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Affichage du formulaire
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp");
         dispatcher.forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse
-            response) throws ServletException, IOException {
-            String constructeur = request.getParameter("constructeur");
-            String modele = request.getParameter("modele");
-            int nb_places = Integer.parseInt(request.getParameter("nb_places"));
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String constructeur = request.getParameter("constructeur");
+        String modele = request.getParameter("modele");
+        int nb_places = Integer.parseInt(request.getParameter("nb_places"));
 
-            Vehicle vehicule = new Vehicle(constructeur, modele, nb_places);
-            vehicleService.create(vehicule);
+        Vehicle vehicule = new Vehicle(constructeur, modele, nb_places);
+        vehicleService.create(vehicule);
 
-            response.sendRedirect(request.getContextPath() + "/vehicles/list");
-
-    }
+        response.sendRedirect(request.getContextPath() + "/vehicles/list");
         }
+}
 

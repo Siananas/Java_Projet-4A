@@ -28,20 +28,17 @@ public class ClientEditServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+
             int clientId = Integer.parseInt(request.getParameter("id"));
             Client client = clientService.findById(clientId);
             request.setAttribute("client", client);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/users/create.jsp");
             dispatcher.forward(request, response);
-        } catch (Exception e) {
-            throw new RuntimeException() ;
-        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+
             int clientId = Integer.parseInt(request.getParameter("id"));
             String nom = request.getParameter("nom");
             String prenom = request.getParameter("prenom");
@@ -52,8 +49,5 @@ public class ClientEditServlet extends HttpServlet {
 
             clientService.updateClient(client);
             response.sendRedirect(request.getContextPath() + "/users/list");
-        } catch (Exception e) {
-            throw new RuntimeException() ;
-        }
     }
 }

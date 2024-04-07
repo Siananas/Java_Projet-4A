@@ -29,13 +29,10 @@ public class HomeServlet extends HttpServlet {
 	}
 
 	private static final long serialVersionUID = 1L;
-	//private VehicleService vehicleService = VehicleService.getInstance();
-	//private ClientService clientService = ClientService.getInstance();
-	//private ReservationService reservationService = ReservationService.getInstance();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
+
 			int nombreVehicles = vehicleService.count();
 			request.setAttribute("nombreVehicles", nombreVehicles);
 
@@ -45,9 +42,6 @@ public class HomeServlet extends HttpServlet {
 			int nombreReservations = reservationService.count();
 			request.setAttribute("nombreReservations", nombreReservations);
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
-		} catch (Exception e) {
-			throw new RuntimeException();
-		}
 
 	}
 

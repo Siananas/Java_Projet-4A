@@ -1,4 +1,4 @@
-package com.epf.rentmanager.servlet;
+package com.epf.rentmanager.servlet.Vehicle;
 
 import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.VehicleService;
@@ -27,30 +27,22 @@ public class VehicleEditServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int vehicleId = Integer.parseInt(request.getParameter("id"));
-            Vehicle vehicle = vehicleService.findById(vehicleId);
-            request.setAttribute("vehicle", vehicle);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp");
-            dispatcher.forward(request, response);
-        } catch (Exception e) {
-            throw new RuntimeException("Échec lors du chargement du véhicule pour modification", e);
-        }
+        int vehicleId = Integer.parseInt(request.getParameter("id"));
+        Vehicle vehicle = vehicleService.findById(vehicleId);
+        request.setAttribute("vehicle", vehicle);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp");
+        dispatcher.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int vehicleId = Integer.parseInt(request.getParameter("id"));
-            String constructeur = request.getParameter("constructeur");
-            String modele = request.getParameter("modele");
-            int nbPlaces = Integer.parseInt(request.getParameter("nb_places"));
-            Vehicle vehicle = new Vehicle(vehicleId, constructeur, modele, nbPlaces);
+        int vehicleId = Integer.parseInt(request.getParameter("id"));
+        String constructeur = request.getParameter("constructeur");
+        String modele = request.getParameter("modele");
+        int nbPlaces = Integer.parseInt(request.getParameter("nb_places"));
+        Vehicle vehicle = new Vehicle(vehicleId, constructeur, modele, nbPlaces);
 
-            vehicleService.updateVehicle(vehicle);
-            response.sendRedirect(request.getContextPath() + "/vehicles/list");
-        } catch (Exception e) {
-            throw new RuntimeException("Échec de la mise à jour du véhicule", e);
-        }
+        vehicleService.updateVehicle(vehicle);
+        response.sendRedirect(request.getContextPath() + "/vehicles/list");
     }
 }

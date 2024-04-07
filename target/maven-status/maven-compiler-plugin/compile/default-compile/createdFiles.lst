@@ -21,10 +21,10 @@ com\epf\rentmanager\config\WebConfiguration.class
 com\epf\rentmanager\service\ReservationService.class
 com\epf\rentmanager\utils\IOUtils.class
 com\epf\rentmanager\servlet\Reservation\ReservationListServlet.class
-com\epf\rentmanager\servlet\VehicleEditServlet.class
 com\epf\rentmanager\exception\UiException.class
 com\epf\rentmanager\persistence\FillDatabase.class
 com\epf\rentmanager\service\ClientService.class
+com\epf\rentmanager\servlet\Vehicle\VehicleEditServlet.class
 com\epf\rentmanager\dao\VehicleDao.class
 com\epf\rentmanager\servlet\Reservation\ReservationDetailsServlet.class
 com\epf\rentmanager\Main.class

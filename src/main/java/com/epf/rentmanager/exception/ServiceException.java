@@ -4,7 +4,7 @@ package com.epf.rentmanager.exception;
  * Exception spécifique aux services dans l'application RentManager.
  * Utilisée pour signaler des erreurs survenant au niveau de la couche service.
  */
-public class ServiceException extends Exception {
+public class ServiceException extends RuntimeException {
 
     /**
      * Construit une nouvelle instance de ServiceException sans message d'erreur ni cause.

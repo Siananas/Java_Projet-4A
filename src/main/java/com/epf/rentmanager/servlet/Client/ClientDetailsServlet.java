@@ -37,51 +37,30 @@ public class ClientDetailsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
-        try{
-            int clientId = Integer.parseInt(request.getParameter("id"));
-            request.setAttribute("client", clientService.findById(clientId));
-            List <Vehicle> vehicles = new ArrayList<>();
-            vehicles = clientService.findAllVehiclesOfClientReservations(clientService.findById(clientId));
-            List<Vehicle> vehicleSansDoublons = vehicles.stream().collect(Collectors.toMap(
-                            Vehicle::getId, vehicle -> vehicle, (existing, replacement) -> existing, LinkedHashMap::new))
-                    .values().stream().collect(Collectors.toList());
-            request.setAttribute("vehicles", vehicleSansDoublons);
-            request.setAttribute("vehicles_count", vehicleSansDoublons.size());
 
-            List <Reservation> listeReservations = new ArrayList<>();
-            listeReservations = reservationService.findByClientId(clientId);
-            for (Reservation reservation : listeReservations) {
-                String vehicle_contructeur = vehicleService.findById(reservation.getVehicule_id())
-                        .getConstructeur();
-                String vehicle_modele = vehicleService.findById(reservation.getVehicule_id())
-                        .getModele();
-                reservation.setVehicle_contructeur_modele(vehicle_contructeur + " " + vehicle_modele);
-            }
-            request.setAttribute("reservations", listeReservations);
-            request.setAttribute("reservations_count", listeReservations.size());
+        int clientId = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("client", clientService.findById(clientId));
+        List <Vehicle> vehicles = new ArrayList<>();
+        vehicles = clientService.findAllVehiclesOfClientReservations(clientService.findById(clientId));
+        List<Vehicle> vehicleSansDoublons = vehicles.stream().collect(Collectors.toMap(
+                        Vehicle::getId, vehicle -> vehicle, (existing, replacement) -> existing, LinkedHashMap::new))
+                .values().stream().collect(Collectors.toList());
+        request.setAttribute("vehicles", vehicleSansDoublons);
+        request.setAttribute("vehicles_count", vehicleSansDoublons.size());
 
-
-
-            //List <Reservation> reservations = new ArrayList<>();
-
-
-            //Client client = new Client();
-            //client = clientService.findById(clientId);
-            //List <Vehicle> vehicules = new ArrayList<>();
-            //vehicules = clientService.findAllVehiclesOfClientReservations(client);
-            //
-            //System.out.println("client id : "+ clientId);
-//            List <Vehicle> vehicules = new ArrayList<>();
-//            for (Reservation reservation : reservations)
-//            if (!vehicules.contains(reservation.getVehicule_id())){
-//
-//            }
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/users/details.jsp");
-            dispatcher.forward(request, response);
-
-        } catch(Exception e) {
-            throw new RuntimeException() ;
+        List <Reservation> listeReservations = new ArrayList<>();
+        listeReservations = reservationService.findByClientId(clientId);
+        for (Reservation reservation : listeReservations) {
+            String vehicle_contructeur = vehicleService.findById(reservation.getVehicule_id())
+                    .getConstructeur();
+            String vehicle_modele = vehicleService.findById(reservation.getVehicule_id())
+                    .getModele();
+            reservation.setVehicle_contructeur_modele(vehicle_contructeur + " " + vehicle_modele);
         }
+        request.setAttribute("reservations", listeReservations);
+        request.setAttribute("reservations_count", listeReservations.size());
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/users/details.jsp");
+        dispatcher.forward(request, response);
     }
 }

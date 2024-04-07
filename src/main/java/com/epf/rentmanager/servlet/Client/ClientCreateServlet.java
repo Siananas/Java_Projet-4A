@@ -37,7 +37,7 @@ public class ClientCreateServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
-        try{
+
             String nom = request.getParameter("nom");
             String prenom = request.getParameter("prenom");
             String email = request.getParameter("email");
@@ -47,10 +47,5 @@ public class ClientCreateServlet extends HttpServlet {
             clientService.create(client);
             System.out.println(client.toString());
             response.sendRedirect(request.getContextPath() + "/users/list");
-
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-            throw new RuntimeException() ;
-        }
     }
 }

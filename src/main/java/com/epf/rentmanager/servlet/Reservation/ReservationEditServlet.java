@@ -22,8 +22,10 @@ public class ReservationEditServlet extends HttpServlet {
 
     @Autowired
     private ReservationService reservationService;
+
     @Autowired
     private ClientService clientService ;
+
     @Autowired
     private VehicleService vehicleService ;
 
@@ -35,36 +37,28 @@ public class ReservationEditServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int reservationId = Integer.parseInt(request.getParameter("id"));
-            Reservation reservation = reservationService.findReservationById(reservationId);
-            request.setAttribute("reservation", reservation);
+        int reservationId = Integer.parseInt(request.getParameter("id"));
+        Reservation reservation = reservationService.findReservationById(reservationId);
+        request.setAttribute("reservation", reservation);
 
-            request.setAttribute("vehicles", vehicleService.findAll());
-            request.setAttribute("clients", clientService.findAll());
+        request.setAttribute("vehicles", vehicleService.findAll());
+        request.setAttribute("clients", clientService.findAll());
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/rents/create.jsp");
-            dispatcher.forward(request, response);
-        } catch (Exception e) {
-            response.sendRedirect("errorPage");
-        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/rents/create.jsp");
+        dispatcher.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int reservationId = Integer.parseInt(request.getParameter("id"));
+        int reservationId = Integer.parseInt(request.getParameter("id"));
 
-            int selectedClientId = Integer.parseInt(request.getParameter("client"));
-            int selectedVehicleId = Integer.parseInt(request.getParameter("car"));
-            LocalDate debut = LocalDate.parse(request.getParameter("debut"));
-            LocalDate fin = LocalDate.parse(request.getParameter("fin"));
-            Reservation reservation = new Reservation(reservationId, selectedClientId, selectedVehicleId, debut, fin);
+        int selectedClientId = Integer.parseInt(request.getParameter("client"));
+        int selectedVehicleId = Integer.parseInt(request.getParameter("car"));
+        LocalDate debut = LocalDate.parse(request.getParameter("debut"));
+        LocalDate fin = LocalDate.parse(request.getParameter("fin"));
+        Reservation reservation = new Reservation(reservationId, selectedClientId, selectedVehicleId, debut, fin);
 
-            reservationService.updateReservation(reservation);
-            response.sendRedirect(request.getContextPath() + "/rents/list");
-        } catch (Exception e) {
-            response.sendRedirect("errorPage");
-        }
+        reservationService.updateReservation(reservation);
+        response.sendRedirect(request.getContextPath() + "/rents/list");
     }
 }

@@ -46,7 +46,7 @@ public class VehicleService {
 		try{
 			return vehicleDao.findById(id);
 		} catch (DaoException e) {
-			throw new ServiceException("Échec de la recherche du véhicule avec l'ID : " + id, e);
+			throw new IllegalArgumentException("Échec de la recherche du véhicule avec l'ID : " + id, e);
 		}
 	}
 
@@ -54,7 +54,7 @@ public class VehicleService {
 		try{
 			return vehicleDao.findAll();
 		} catch (DaoException e) {
-			throw new ServiceException("Échec de la récupération de la liste des véhicules.", e);
+			throw new IllegalArgumentException("Échec de la récupération de la liste des véhicules.", e);
 		}
 	}
 
@@ -65,7 +65,7 @@ public class VehicleService {
 			return affectedRows > 0;
 
 		} catch (DaoException e) {
-			throw new ServiceException("Échec de la suppression du véhicule avec l'ID : " + vehicleId, e);
+			throw new IllegalArgumentException("Échec de la suppression du véhicule avec l'ID : " + vehicleId, e);
 		}
 	}
 
@@ -73,15 +73,33 @@ public class VehicleService {
 		try {
 			return vehicleDao.findAllClientsOfThisVehicleReservation(vehicle);
 		} catch (DaoException e) {
-			throw new ServiceException("Échec de la récupération des clients ayant réservé le véhicule " + vehicle.getId(), e);
+			throw new IllegalArgumentException("Échec de la récupération des clients ayant réservé le véhicule " + vehicle.getId(), e);
 		}
 	}
 
-	public boolean updateVehicle(Vehicle vehicle) throws ServiceException {
+	public boolean updteVehicle(Vehicle vehicle) throws ServiceException {
 		try {
 			return vehicleDao.updateVehicle(vehicle);
 		} catch (DaoException e) {
 			throw new ServiceException("Échec de la mise à jour du véhicule avec l'id " + vehicle.getId(), e);
 		}
 	}
+
+	public boolean updateVehicle(Vehicle vehicle) throws ServiceException {
+		if (vehicle.getConstructeur().isEmpty()) {
+			throw new ServiceException("Le constructeur du véhicule ne peut pas être vide.");
+		}
+		if (vehicle.getModele().isEmpty()) {
+			throw new ServiceException("Le modèle du véhicule ne peut pas être vide.");
+		}
+		if (vehicle.getNb_places() < 2 || vehicle.getNb_places() > 9) {
+			throw new ServiceException("Le nombre de places doit être entre 2 et 9.");
+		}
+		try {
+			return vehicleDao.updateVehicle(vehicle);
+		} catch (DaoException e) {
+			throw new ServiceException("Échec de la mise à jour du véhicule avec l'id " + vehicle.getId(), e);
+		}
+	}
+
 }

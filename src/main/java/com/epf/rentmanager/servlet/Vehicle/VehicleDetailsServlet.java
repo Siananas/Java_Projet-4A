@@ -36,42 +36,38 @@ public class VehicleDetailsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try{
-            int vehicleId = Integer.parseInt(request.getParameter("id"));
-            request.setAttribute("vehicle", vehicleService.findById(vehicleId));
+        int vehicleId = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("vehicle", vehicleService.findById(vehicleId));
 
-            List<Client> clients = new ArrayList<>();
-            clients = vehicleService.findAllClientsOfVehicleReservation(vehicleService.findById(vehicleId));
-            List<Client> clientsSansDoublons = clients.stream().collect(Collectors.toMap(
-                            Client::getId, client -> client, (existing, replacement) -> existing, LinkedHashMap::new))
-                    .values().stream().collect(Collectors.toList());
-            request.setAttribute("clients", clientsSansDoublons);
-            request.setAttribute("clients_count", clientsSansDoublons.size());
+        List<Client> clients = new ArrayList<>();
+        clients = vehicleService.findAllClientsOfVehicleReservation(vehicleService.findById(vehicleId));
+        List<Client> clientsSansDoublons = clients.stream().collect(Collectors.toMap(
+                        Client::getId, client -> client, (existing, replacement) -> existing, LinkedHashMap::new))
+                .values().stream().collect(Collectors.toList());
+        request.setAttribute("clients", clientsSansDoublons);
+        request.setAttribute("clients_count", clientsSansDoublons.size());
 
-            for (Client client : clients){
-                System.out.println(client.toString());
-            }
-            for (Client client : clientsSansDoublons){
-                System.out.println(client.toString());
-            }
-
-            List <Reservation> listeReservations = new ArrayList<>();
-            listeReservations = reservationService.findByVehicleId(vehicleId);
-            for (Reservation reservation : listeReservations) {
-                String client_nom = clientService.findById(reservation.getClient_id())
-                        .getNom();
-                String client_prenom = clientService.findById(reservation.getClient_id())
-                        .getPrenom();
-                reservation.setClient_prenom_nom(client_prenom + " " + client_nom);
-            }
-
-            request.setAttribute("reservations", listeReservations);
-            request.setAttribute("reservations_count", listeReservations.size());
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/details.jsp");
-            dispatcher.forward(request, response);
-        } catch(Exception e) {
-            throw new RuntimeException() ;
+        for (Client client : clients){
+            System.out.println(client.toString());
         }
+        for (Client client : clientsSansDoublons){
+            System.out.println(client.toString());
+        }
+
+        List <Reservation> listeReservations = new ArrayList<>();
+        listeReservations = reservationService.findByVehicleId(vehicleId);
+        for (Reservation reservation : listeReservations) {
+            String client_nom = clientService.findById(reservation.getClient_id())
+                    .getNom();
+            String client_prenom = clientService.findById(reservation.getClient_id())
+                    .getPrenom();
+            reservation.setClient_prenom_nom(client_prenom + " " + client_nom);
+        }
+
+        request.setAttribute("reservations", listeReservations);
+        request.setAttribute("reservations_count", listeReservations.size());
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/details.jsp");
+        dispatcher.forward(request, response);
     }
 }

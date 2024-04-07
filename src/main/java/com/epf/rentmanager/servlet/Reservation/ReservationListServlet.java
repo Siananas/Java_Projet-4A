@@ -3,6 +3,7 @@ package com.epf.rentmanager.servlet.Reservation;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
+import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
@@ -35,32 +36,22 @@ public class ReservationListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            String action = request.getParameter("action");
-            if ("delete".equals(action)) {
-                int reservationId = Integer.parseInt(request.getParameter("id"));
-                reservationService.delete(reservationId);
-                response.setHeader("Refresh", "0; URL=" + request.getContextPath() + "/rents/list");
-            }
-
-            List <Reservation> listeReservations = reservationService.findAll();
-            for (Reservation reservation : listeReservations){
-                String client_nom = clientService.findById(reservation.getClient_id())
-                        .getNom();
-                reservation.setClient_nom(client_nom);
-                String vehicle_contructeur = vehicleService.findById(reservation.getVehicule_id())
-                        .getConstructeur();
-                String vehicle_modele = vehicleService.findById(reservation.getVehicule_id())
-                        .getModele();
-                reservation.setVehicle_contructeur_modele(vehicle_contructeur + " " + vehicle_modele);
-
-
-                reservation.setClient_nom(client_nom);
-            }
-            request.setAttribute("reservations", listeReservations);
-            this.getServletContext().getRequestDispatcher("/WEB-INF/views/rents/list.jsp").forward(request, response);
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            int reservationId = Integer.parseInt(request.getParameter("id"));
+            reservationService.delete(reservationId);
+            response.setHeader("Refresh", "0; URL=" + request.getContextPath() + "/rents/list");
         }
+
+        List <Reservation> listeReservations = reservationService.findAll();
+        for (Reservation reservation : listeReservations){
+            Client client = clientService.findById(reservation.getClient_id());
+            reservation.setClient_nom(client.getPrenom() + " " + client.getNom());
+
+            Vehicle vehicle = vehicleService.findById(reservation.getVehicule_id());
+            reservation.setVehicle_contructeur_modele(vehicle.getConstructeur() + " " + vehicle.getModele());
+        }
+        request.setAttribute("reservations", listeReservations);
+        this.getServletContext().getRequestDispatcher("/WEB-INF/views/rents/list.jsp").forward(request, response);
     }
 }

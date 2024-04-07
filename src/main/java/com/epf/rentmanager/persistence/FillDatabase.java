@@ -48,10 +48,10 @@ public class FillDatabase {
             stmt.execute("INSERT INTO Vehicle(constructeur, modele, nb_places) VALUES('Seat', 'Ibiza', 4)");
             stmt.execute("INSERT INTO Vehicle(constructeur, modele, nb_places) VALUES('Nissan', 'SUV', 4)");
             
-            stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('Dupont', 'Jean', 'jean.dupont@email.com', '1988-01-22')");
-            stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('Morin', 'Sabrina', 'sabrina.morin@email.com', '1988-01-22')");
-            stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('Afleck', 'Steeve', 'steeve.afleck@email.com', '1988-01-22')");
-            stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('Rousseau', 'Jacques', 'jacques.rousseau@email.com', '1988-01-22')");
+            stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('DUPONT', 'Jean', 'jean.dupont@email.com', '1988-01-22')");
+            stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('MORIN', 'Sabrina', 'sabrina.morin@email.com', '1988-01-22')");
+            stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('AFLECK', 'Steeve', 'steeve.afleck@email.com', '1988-01-22')");
+            stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('ROUSSEAU', 'Jacques', 'jacques.rousseau@email.com', '1988-01-22')");
 
             stmt.execute("INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(1, 1, '2024-04-01 10:00:00', '2024-04-05 10:00:00')");
             stmt.execute("INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(2, 2, '2024-04-06 10:00:00', '2024-04-10 10:00:00')");

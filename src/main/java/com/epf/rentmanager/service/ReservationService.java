@@ -19,11 +19,10 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Service
 public class ReservationService {
     private ReservationDao reservationDao;
-    //private VehicleDao vehicleDao;
+
     private ReservationService(ReservationDao reservationDao) {
         this.reservationDao = reservationDao;
     }
-
 
     public void create(Reservation reservation) throws ServiceException {
         try {
@@ -39,9 +38,7 @@ public class ReservationService {
             if (reservation.calculDureeLocationVoitureDepasse30Jours(listeReservation)){
                 throw new ServiceException("La réservation d'une voiture ne peux pas dépasser 30 jours");
             }
-
             reservationDao.create(reservation);
-
 
         } catch (DaoException e) {
             throw new ServiceException("Échec de la création de  la reservation : " + reservation.toString(), e);
@@ -58,8 +55,7 @@ public class ReservationService {
 
     public List<Reservation> findByClientId(int clientId) throws ServiceException {
         try {
-            List<Reservation> listeReservation = new ArrayList<>();
-            listeReservation = reservationDao.findResaByClientId(clientId);
+            List<Reservation> listeReservation = reservationDao.findResaByClientId(clientId);
             return listeReservation ;
         } catch (Exception e) {
             throw new ServiceException("Échec de la recherche des reservations avec l'ID client : " + clientId, e);
@@ -68,8 +64,7 @@ public class ReservationService {
 
     public List<Reservation> findByVehicleId(int vehicleId) throws ServiceException {
         try {
-            List<Reservation> listeReservation = new ArrayList<>();
-            listeReservation = reservationDao.findResaByVehicleId(vehicleId);
+            List<Reservation> listeReservation  = reservationDao.findResaByVehicleId(vehicleId);
             return listeReservation ;
         } catch (Exception e) {
             throw new ServiceException("Échec de la recherche des reservations avec l'ID véhicule: " + vehicleId, e);
@@ -78,8 +73,7 @@ public class ReservationService {
 
     public List<Reservation> findAll() throws ServiceException {
         try {
-            List<Reservation> listeReservation = new ArrayList<>();
-            listeReservation = reservationDao.findAll();
+            List<Reservation> listeReservation = reservationDao.findAll();
             return listeReservation ;
         } catch (Exception e) {
             throw new ServiceException("Échec de la récupération des reservations", e);
@@ -108,9 +102,25 @@ public class ReservationService {
 
     public boolean updateReservation(Reservation reservation) throws ServiceException {
         try {
+            List<Reservation> listeReservation = reservationDao.findResaByVehicleId(reservation.getVehicule_id());
+            listeReservation.removeIf(r -> r.getId() == reservation.getId());
+
+            if(reservation.verifDisponibiliteVehicle(reservation, listeReservation)) {
+                throw new ServiceException("La voiture n'est pas disponible pour cette période");
+            }
+
+            if (reservation.verifDureeReservation(reservation.getDebut(), reservation.getFin())) {
+                throw new ServiceException("La voiture ne peut pas être réservée plus de 7 jours");
+            }
+
+            if (reservation.calculDureeLocationVoitureDepasse30Jours(listeReservation)) {
+                throw new ServiceException("La réservation d'une voiture ne peux pas dépasser 30 jours");
+            }
+
             return reservationDao.updateReservation(reservation);
         } catch (DaoException e) {
             throw new ServiceException("Échec de la mise à jour de la réservation avec l'id " + reservation.getId(), e);
         }
     }
+
 }

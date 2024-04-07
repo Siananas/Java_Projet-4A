@@ -31,19 +31,14 @@ public class ReservationDetailsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try{
-            int reservationId = Integer.parseInt(request.getParameter("id"));
-            Reservation reservation = new Reservation();
-            reservation = reservationService.findReservationById(reservationId);
-            request.setAttribute("reservation", reservation);
+        int reservationId = Integer.parseInt(request.getParameter("id"));
+        Reservation reservation =  reservationService.findReservationById(reservationId);
+        request.setAttribute("reservation", reservation);
 
-            request.setAttribute("client", clientService.findById(reservation.getClient_id()));
-            request.setAttribute("vehicle", vehicleService.findById(reservation.getVehicule_id()));
+        request.setAttribute("client", clientService.findById(reservation.getClient_id()));
+        request.setAttribute("vehicle", vehicleService.findById(reservation.getVehicule_id()));
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/rents/details.jsp");
-                dispatcher.forward(request, response);
-        } catch(Exception e) {
-            throw new RuntimeException() ;
-        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/rents/details.jsp");
+            dispatcher.forward(request, response);
     }
 }

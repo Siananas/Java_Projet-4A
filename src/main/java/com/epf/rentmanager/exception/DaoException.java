@@ -1,6 +1,6 @@
 package com.epf.rentmanager.exception;
 
-public class DaoException extends Exception{
+public class DaoException extends RuntimeException{
 
     // Constructeur sans argument
     public DaoException() {

@@ -49,8 +49,7 @@ public class InterfaceMethodes {
 
     public void findAllClients() throws UiException {
         try{
-            List <Client> listClients = new ArrayList<>() ;
-            listClients = clientService.findAll();
+            List <Client> listClients =  clientService.findAll();
             for (Client client : listClients){
                 System.out.println(client.toString());
             }
@@ -141,10 +140,6 @@ public class InterfaceMethodes {
     }
 
     public void CreateReservation() throws UiException {
-        //String nom = IOUtils.readString("Entrer le nom du client : ", true);
-        //String prenom = IOUtils.readString("Entrer le prénom du client : ", true);
-        //String email = IOUtils.readString("Entrer l'email du client : ", true);
-        //LocalDate naissance = IOUtils.readDate("Entrer la date de naissance du client : ", true);
 
         Integer idClient = 2;
         Integer idVehicle = 2;
@@ -208,8 +203,6 @@ public class InterfaceMethodes {
     public void findAllVehiclesOfClientReservations() throws UiException {
         Integer clientId = IOUtils.readInt("Entrer l'identifiant du client : ");
         try {
-//            Client client = new Client(); // Supposons que Client a un constructeur qui accepte l'id
-//            client.setId(clientId);
 
             List<Vehicle> vehicles = clientService.findAllVehiclesOfClientReservations(clientService.findById(clientId));
 

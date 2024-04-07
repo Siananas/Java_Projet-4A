@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @WebServlet("/users/list")
 public class ClientListServlet extends HttpServlet {
@@ -21,8 +22,8 @@ public class ClientListServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response){
-        try{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
             String action = request.getParameter("action");
             if ("delete".equals(action)) {
                 int clientId = Integer.parseInt(request.getParameter("id"));
@@ -31,12 +32,6 @@ public class ClientListServlet extends HttpServlet {
             }
                 request.setAttribute("clients", clientService.findAll());
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
-
-
-
-        } catch (Exception e){
-            throw new RuntimeException();
-        }
 
     }
 

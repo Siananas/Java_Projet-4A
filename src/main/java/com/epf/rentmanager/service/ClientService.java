@@ -87,11 +87,39 @@ public class ClientService {
 		}
 	}
 
-	public boolean updateClient(Client client) throws ServiceException {
+	public boolean updatelient(Client client) throws ServiceException {
 		try {
 			return clientDao.updateClient(client);
 		} catch (DaoException e) {
 			throw new ServiceException("Échec de la mise à jour du client avec l'id " + client.getId(), e);
 		}
 	}
+
+	public boolean updateClient(Client client) throws ServiceException {
+		if (client.getNom().length() < 3) {
+			throw new ServiceException("Le nom du client ne peut pas être vide et doit compter au minimum 3 caractères.");
+		}
+		if (client.getPrenom().length() < 3) {
+			throw new ServiceException("Le prénom du client ne peut pas être vide et doit compter au minimum 3 caractères.");
+		}
+		if (!client.verifAge(client.getNaissance())) {
+			throw new ServiceException("L'âge du client est invalide.");
+		}
+		client.setNom(client.getNom().toUpperCase());
+		try {
+			List<Client> listeClients = clientDao.findAll();
+			for (Client item : listeClients) {
+				// Vérifiez si l'email existe déjà pour un autre client (avec un ID différent)
+				if (Objects.equals(item.getEmail(), client.getEmail()) && item.getId() != client.getId()) {
+					throw new ServiceException("L'adresse email est déjà utilisée par un autre client.");
+				}
+			}
+			return clientDao.updateClient(client);
+		} catch (DaoException e) {
+			throw new ServiceException("Échec de la mise à jour du client dans la base de données.", e);
+		} catch (Exception e) {
+			throw new ServiceException("Une erreur inattendue s'est produite lors de la mise à jour du client.", e);
+		}
+	}
+
 }
