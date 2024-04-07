@@ -1,9 +1,9 @@
 package com.epf.rentmanager.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.epf.rentmanager.dao.ClientDao;
-import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
@@ -14,63 +14,68 @@ import org.springframework.stereotype.Service;
 public class ClientService {
 
 	private ClientDao clientDao;
-	//public static ClientService instance;
 
-	private ClientService(ClientDao clientDao){
+	public ClientService(ClientDao clientDao) {
 		this.clientDao = clientDao;
 	}
 
-//	public static ClientService getInstance() {
-//		if (instance == null) {
-//			instance = new ClientService();
-//		}
-//		return instance;
-//	}
-	
-	
 	public long create(Client client) throws ServiceException {
-		try {
-			if (!client.getNom().isEmpty() && !client.getPrenom().isEmpty()) {
-				client.setNom(client.getNom().toUpperCase());
-				return clientDao.create(client);
-			}
-		} catch(Exception e) {
-			throw new ServiceException() ;
+		if (client.getNom().length()<3) {
+			throw new ServiceException("Le nom du client ne peut pas être vide et doit compter au minimum 3 caractères.");
 		}
-		return 0;
+		if (client.getPrenom().length()<3) {
+			throw new ServiceException("Le prénom du client ne peut pas être vide et doit compter au minimum 3 caractères.");
+		}
+		if (!client.verifAge(client.getNaissance())) {
+			throw new ServiceException("L'âge du client est invalide.");
+		}
+		client.setNom(client.getNom().toUpperCase());
+		try {
+			List <Client> listeClients = clientDao.findAll();
+			for (Client item : clientDao.findAll()){
+				if (Objects.equals(item.getEmail(), client.getEmail())){
+					throw new ServiceException("L'adresse email est déjà utilisée");
+				}
+			}
+			return clientDao.create(client);
+		} catch (DaoException e) {
+			throw new ServiceException("Échec de la création du client dans la base de données.", e);
+		} catch (Exception e) {
+			throw new ServiceException("Une erreur inattendue s'est produite lors de la création du client.", e);
+		}
 	}
 
+
 	public Client findById(int id) throws ServiceException {
-		try{
+		try {
 			return clientDao.findById(id);
-		} catch (Exception e){
-			throw new ServiceException();
+		} catch (Exception e) {
+			throw new ServiceException("Échec de la recherche du client avec l'id " + id, e);
 		}
 	}
 
 	public List<Client> findAll() throws ServiceException {
-		try{
+		try {
 			return clientDao.findAll();
-		} catch (Exception e){
-			throw new ServiceException();
+		} catch (Exception e) {
+			throw new ServiceException("Échec de la récupération de la liste des clients.", e);
 		}
 	}
 
-	public long delete(int id) throws ServiceException {
+	public void delete(int id) throws ServiceException {
 		try {
-			Client client = new Client();
-			client = clientDao.findById(id);
-			clientDao.delete(client) ;
-		} catch(Exception e) {
-			throw new ServiceException() ;
+			Client client = clientDao.findById(id);
+			clientDao.delete(client);
+		} catch (Exception e) {
+			throw new ServiceException("Échec de la suppression du client avec l'id " + id, e);
 		}
-		return 0;
 	}
+
 	public int count() throws ServiceException {
 		try {
 			return clientDao.countClients();
 		} catch (DaoException e) {
-			throw new ServiceException("Échec de la récupération du nombre de véhicules", e);
+			throw new ServiceException("Échec de la récupération du nombre de clients.", e);
 		}
 	}
 

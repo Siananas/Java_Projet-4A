@@ -34,15 +34,10 @@ public class InterfaceMethodes {
     }
 
     public void CreateClient() throws UiException {
-        //String nom = IOUtils.readString("Entrer le nom du client : ", true);
-        //String prenom = IOUtils.readString("Entrer le prénom du client : ", true);
-        //String email = IOUtils.readString("Entrer l'email du client : ", true);
-        //LocalDate naissance = IOUtils.readDate("Entrer la date de naissance du client : ", true);
-
-        String nom = "Bob";
-        String prenom = "Bricoleur";
-        String email = "bob.bricoleur@gmail.com";
-        LocalDate naissance = LocalDate.of(2014, 4, 28);
+        String nom = IOUtils.readString("Entrer le nom du client : ", true);
+        String prenom = IOUtils.readString("Entrer le prénom du client : ", true);
+        String email = IOUtils.readString("Entrer l'email du client : ", true);
+        LocalDate naissance = IOUtils.readDate("Entrer la date de naissance du client : ", true);
 
         Client client = new Client(nom, prenom, email, naissance) ;
         try {
@@ -80,33 +75,20 @@ public class InterfaceMethodes {
     }
 
     public void CreateVehicle() throws UiException {
-        //String nom = IOUtils.readString("Entrer le nom du client : ", true);
-        //String prenom = IOUtils.readString("Entrer le prénom du client : ", true);
-        //String email = IOUtils.readString("Entrer l'email du client : ", true);
-        //LocalDate naissance = IOUtils.readDate("Entrer la date de naissance du client : ", true);
-
         String constructeur = IOUtils.readString("Entrer le constructeur du véhicule : ", true);
         String modele = IOUtils.readString("Entrer le modèle du véhicule : ", true);
         Integer nb_places = IOUtils.readInt("Entrer le nombre de place : ");
 
-        /*String constructeur = "Opel";
-        String modele = "4008k";
-        Integer nb_places = 4;*/
-
         Vehicle vehicle = new Vehicle(constructeur, modele, nb_places);
 
-        try {
-            vehicleService.create(vehicle);
-        } catch (ServiceException e) {
-            throw new UiException("Erreur lors de la création du véhicule.", e);
-        }
+        vehicleService.create(vehicle);
+
     }
 
     public void findVehicleById() throws UiException {
         Integer vehicleId = IOUtils.readInt("Entrer l'identifiant du véhicule : ");
         try {
-            Vehicle vehicle = new Vehicle();
-            vehicle = vehicleService.findById(vehicleId);
+            Vehicle vehicle = vehicleService.findById(vehicleId);
             if (vehicle != null) {
                 System.out.println(vehicle.toString());
             } else {
@@ -119,8 +101,7 @@ public class InterfaceMethodes {
 
     public void findAllVehicles() throws UiException {
         try{
-            List <Vehicle> listVehicles = new ArrayList<>() ;
-            listVehicles = vehicleService.findAll();
+            List <Vehicle> listVehicles = vehicleService.findAll();
             for (Vehicle vehicle : listVehicles){
                 System.out.println(vehicle.toString());
             }
@@ -149,8 +130,7 @@ public class InterfaceMethodes {
 
     public void findAllReservations() throws UiException {
         try{
-            List <Reservation> listReservations = new ArrayList<>() ;
-            listReservations = reservationService.findAll();
+            List <Reservation> listReservations = reservationService.findAll();
             for (Reservation reservation : listReservations){
                 System.out.println(reservation.toString());
             }

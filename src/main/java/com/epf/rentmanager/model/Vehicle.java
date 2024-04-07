@@ -15,12 +15,6 @@ public class Vehicle {
         this.nb_places = nb_places ;
     }
 
-    //public Vehicle(Integer id, String constructeur, Integer nb_places) {
-    //    this.id = id;
-    //    this.constructeur = constructeur;
-    //    this.nb_places = nb_places;
-    //}
-
     public Vehicle(Integer id, String constructeur, String modele, Integer nb_places){
         this.id = id ;
         this.constructeur = constructeur ;

@@ -35,7 +35,6 @@ public class VehicleCreateServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
-        try{
             String constructeur = request.getParameter("constructeur");
             String modele = request.getParameter("modele");
             int nb_places = Integer.parseInt(request.getParameter("nb_places"));
@@ -45,10 +44,6 @@ public class VehicleCreateServlet extends HttpServlet {
 
             response.sendRedirect(request.getContextPath() + "/vehicles/list");
 
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-            throw new RuntimeException() ;
-        }
     }
         }
 

@@ -25,42 +25,43 @@
                     <!-- Horizontal Form -->
                     <div class="box">
                         <!-- form start -->
-                        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/users/create">
+                        <form class="form-horizontal" method="post">
+                            <input type="hidden" name="id" value="${client.id}" />
                             <div class="box-body">
                                 <div class="form-group">
                                     <label for="last_name" class="col-sm-2 control-label">Nom</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="last_name" name="nom" placeholder="Nom">
+                                        <input type="text" class="form-control" id="last_name" name="nom" placeholder="Nom" value="${client.nom}" onFocus="this.value='';">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="first_name" class="col-sm-2 control-label">Prenom</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="first_name" name="prenom" placeholder="Prenom">
+                                        <input type="text" class="form-control" id="first_name" name="prenom" placeholder="Prenom"  value="${client.prenom}" onFocus="this.value='';">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="email" class="col-sm-2 control-label">Email</label>
 
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email"  value="${client.email}" onFocus="this.value='';">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="birthday" class="col-sm-2 control-label">Nom</label>
+                                    <label for="birthday" class="col-sm-2 control-label">Naissance</label>
 
                                     <div class="col-sm-10">
-                                        <input type="date" class="form-control" id="birthday" name="naissance" placeholder="Date de naissance">
+                                        <input type="date" class="form-control" id="birthday" name="naissance" placeholder="Date de naissance"  value="${client.naissance}" onFocus="this.value='';">
                                     </div>
                                 </div>
 
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <button type="submit" class="btn btn-info pull-right" href="${pageContext.request.contextPath}/users/list>Ajouter</button>
+                                <button type="submit" class="btn btn-info pull-right" href="${pageContext.request.contextPath}/users/list">Ajouter</button>
                             </div>
                             <!-- /.box-footer -->
                         </form>

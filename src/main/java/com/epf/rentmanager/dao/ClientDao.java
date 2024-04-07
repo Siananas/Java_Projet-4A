@@ -52,6 +52,7 @@ public class ClientDao {
 
 			ps.close();
 			connection.close();
+
 		} catch (SQLException e) {
 			throw new DaoException("Échec de la création du client : " + client.toString(), e);
 		}
@@ -61,13 +62,9 @@ public class ClientDao {
 	public Client findById(int id) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
-			PreparedStatement ps =
-					connection.prepareStatement(FIND_CLIENT_QUERY);
+			PreparedStatement ps = connection.prepareStatement(FIND_CLIENT_QUERY);
 
 			ps.setInt(1, id);
-
-			//ps.execute();
-
 			ResultSet resultSet = ps.executeQuery();
 
 			if(resultSet.next()){
@@ -97,6 +94,11 @@ public class ClientDao {
 			PreparedStatement ps_client = connection.prepareStatement(DELETE_CLIENT_QUERY);
 			ps_client.setInt(1,client.getId());
 			int affectedRows = ps_client.executeUpdate();
+
+			ps_client.close();
+			ps_reservation.close();
+			connection.close();
+
 			return affectedRows;
 
 		} catch (SQLException e) {
@@ -121,6 +123,9 @@ public class ClientDao {
 				LocalDate naissance = resultSet.getDate("naissance").toLocalDate();
 				listeClients.add(new Client(id, nom, prenom, email, naissance)) ;
 			}
+			ps.close();
+			connection.close();
+
 			return listeClients ;
 
 		} catch (SQLException e) {
@@ -140,9 +145,9 @@ public class ClientDao {
 				count = resultSet.getInt(1);
 			}
 
-			resultSet.close();
 			ps.close();
 			connection.close();
+
 		} catch (SQLException e) {
 			throw new DaoException("Échec de la récupération du nombre de clients", e);
 		}
@@ -154,10 +159,11 @@ public class ClientDao {
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement ps = connection.prepareStatement(FIND_VEHICLE_QUERY);
+
 			ps.setInt(1, client.getId());
 			ResultSet resultSet = ps.executeQuery();
-			List<Vehicle> listeVehicles = new ArrayList<>();
 
+			List<Vehicle> listeVehicles = new ArrayList<>();
 			while(resultSet.next()) {
 				Integer id = resultSet.getInt("id");
 				String constructeur = resultSet.getString("constructeur");
@@ -165,6 +171,7 @@ public class ClientDao {
 				Integer nb_places = resultSet.getInt("nb_places");
 				listeVehicles.add(new Vehicle(id,constructeur,modele,nb_places));
 			}
+
 			return listeVehicles ;
 
 		} catch (Exception e){
@@ -183,7 +190,9 @@ public class ClientDao {
 			ps.setInt(5, client.getId());
 
 			int updatedRows = ps.executeUpdate();
+
 			return updatedRows > 0;
+
 		} catch (SQLException e) {
 			throw new DaoException("Échec de la mise à jour du client " + client.getId(), e);
 		}

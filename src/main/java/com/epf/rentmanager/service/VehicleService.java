@@ -12,14 +12,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class VehicleService {
-
 	private VehicleDao vehicleDao;
-	//public static VehicleService instance;
-	
 	private VehicleService(VehicleDao vehicleDao) {
 		this.vehicleDao = vehicleDao;
 	}
-
 
 	public int count() throws ServiceException {
 		try {
@@ -29,15 +25,20 @@ public class VehicleService {
 		}
 	}
 
-	public long create(Vehicle vehicle) throws ServiceException {
+	public long create(Vehicle vehicle) {
+		if (vehicle.getConstructeur().isEmpty()) {
+			throw new IllegalArgumentException("Le constructeur du véhicule ne peut pas être vide.");
+		}
+		if (vehicle.getModele().isEmpty()) {
+			throw new IllegalArgumentException("Le modèle du véhicule ne peut pas être vide.");
+		}
+		if (vehicle.getNb_places() < 2 || vehicle.getNb_places() > 9) {
+			throw new IllegalArgumentException("Le nombre de places doit être entre 2 et 9.");
+		}
 		try {
-			if (!vehicle.getConstructeur().isEmpty() && vehicle.getNb_places() > 1) {
-				return this.vehicleDao.create(vehicle);
-			} else {
-				throw new ServiceException("Le constructeur ne peut pas être vide et le nombre de places doit être supérieur à 1.");
-			}
+			return this.vehicleDao.create(vehicle);
 		} catch (DaoException e) {
-			throw new ServiceException("Échec de la création du véhicule : " + vehicle.toString(), e);
+			throw new IllegalArgumentException("Échec de la création du véhicule.", e);
 		}
 	}
 

@@ -31,8 +31,7 @@ public class ReservationDao {
 	public long create(Reservation reservation) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
-			PreparedStatement ps =
-					connection.prepareStatement(CREATE_RESERVATION_QUERY);
+			PreparedStatement ps = connection.prepareStatement(CREATE_RESERVATION_QUERY);
 
 			ps.setInt(1, reservation.getClient_id());
 			ps.setInt(2, reservation.getVehicule_id());
@@ -51,9 +50,10 @@ public class ReservationDao {
 
 			ps.close();
 			connection.close();
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			throw new DaoException();
+			throw new DaoException("Erreur lors de la création de la réservation", e);
 		}
 		return -1 ;
 	}
@@ -66,10 +66,13 @@ public class ReservationDao {
 			ps.setInt(1,reservation.getId());
 
 			int affectedRows = ps.executeUpdate();
+
+			ps.close();
+			connection.close();
 			return affectedRows;
 
 		} catch (SQLException e){
-			throw new DaoException();
+			throw new DaoException("Erreur lors de la suppression de la réservation avec l'ID : " + reservation.getId(), e);
 		}
 	}
 
@@ -89,10 +92,13 @@ public class ReservationDao {
 				LocalDate fin = resultSet.getDate("fin").toLocalDate();
 				 return new Reservation(reservationId, Client_id, Vehicule_id, debut, fin) ;
 			}
+
+			ps.close();
+			connection.close();
 			return null ;
 
 		} catch (SQLException e){
-			throw new DaoException() ;
+			throw new DaoException("Erreur lors de la recherche de la réservation avec l'ID : " + reservationId, e);
 		}
 	}
 
@@ -115,10 +121,13 @@ public class ReservationDao {
 				LocalDate fin = resultSet.getDate("fin").toLocalDate();
 				listeReservations.add(new Reservation(id, clientId, Vehicule_id, debut, fin)) ;
 			}
+
+			ps.close();
+			connection.close();
 			return listeReservations ;
 
 		} catch (SQLException e){
-			throw new DaoException() ;
+			throw new DaoException("Erreur lors de la recherche des réservations pour le client ID : " + clientId, e);
 		}
 	}
 
@@ -140,10 +149,13 @@ public class ReservationDao {
 				LocalDate fin = resultSet.getDate("fin").toLocalDate();
 				listeReservations.add(new Reservation(id, Client_id, vehicleId, debut, fin)) ;
 			}
+
+			ps.close();
+			connection.close();
 			return listeReservations ;
 
 		} catch (SQLException e){
-			throw new DaoException() ;
+			throw new DaoException("Échec de la récupération de la liste des réservations", e) ;
 		}
 	}
 
@@ -164,10 +176,13 @@ public class ReservationDao {
 				LocalDate fin = resultSet.getDate("fin").toLocalDate();
 				listeReservations.add(new Reservation(id, Client_id, Vehicule_id, debut, fin)) ;
 			}
+
+			ps.close();
+			connection.close();
 			return listeReservations ;
 
 		} catch (SQLException e){
-			throw new DaoException() ;
+			throw new DaoException("Échec de la récupération de la liste des réservations", e) ;
 		}
 	}
 
@@ -186,8 +201,9 @@ public class ReservationDao {
 			resultSet.close();
 			ps.close();
 			connection.close();
+
 		} catch (SQLException e) {
-			throw new DaoException("Échec de la récupération du nombre de reservations", e);
+			throw new DaoException("Echac du compte des réservations", e);
 		}
 		return count;
 	}
@@ -203,7 +219,10 @@ public class ReservationDao {
 			ps.setInt(5, reservation.getId());
 
 			int updatedRows = ps.executeUpdate();
-			return updatedRows > 0; // Retourne true si au moins une ligne a été mise à jour
+
+			ps.close();
+			connection.close();
+			return updatedRows > 0;
 		} catch (SQLException e) {
 			throw new DaoException("Échec de la mise à jour de la réservation avec l'id " + reservation.getId(), e);
 		}

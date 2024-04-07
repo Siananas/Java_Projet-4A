@@ -1,5 +1,8 @@
 package com.epf.rentmanager.model;
 import java.time.LocalDate ;
+import java.time.Year;
+
+import static java.time.temporal.ChronoUnit.YEARS;
 
 public class Client {
     private  Integer id ;
@@ -79,5 +82,12 @@ public class Client {
                 ", email='" + email + '\'' +
                 ", naissance='" + naissance + '\'' +
                 '}';
+    }
+
+    public boolean verifAge(LocalDate naissance) {
+        LocalDate dateMaintenant = LocalDate.now();
+        long age = YEARS.between(naissance, dateMaintenant);
+        System.out.println(age);
+        return age>18;
     }
 }

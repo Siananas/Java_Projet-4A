@@ -1,10 +1,12 @@
 package com.epf.rentmanager.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.epf.rentmanager.dao.ClientDao;
 import com.epf.rentmanager.dao.ReservationDao;
+import com.epf.rentmanager.dao.VehicleDao;
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
@@ -12,11 +14,12 @@ import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.model.Vehicle;
 import org.springframework.stereotype.Service;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Service
 public class ReservationService {
-
     private ReservationDao reservationDao;
-
+    //private VehicleDao vehicleDao;
     private ReservationService(ReservationDao reservationDao) {
         this.reservationDao = reservationDao;
     }
@@ -24,7 +27,22 @@ public class ReservationService {
 
     public void create(Reservation reservation) throws ServiceException {
         try {
+            List<Reservation> listeReservation = reservationDao.findResaByVehicleId(reservation.getVehicule_id());
+            if(reservation.verifDisponibiliteVehicle(reservation, listeReservation)){
+                    throw new ServiceException("La voiture n'est pas disponible pour cette période");
+
+            }
+            if (reservation.verifDureeReservation(reservation.getDebut(), reservation.getFin())){
+                throw new ServiceException("La voiture ne peut pas être réservée plus de 7 jours");
+            }
+
+            if (reservation.calculDureeLocationVoitureDepasse30Jours(listeReservation)){
+                throw new ServiceException("La réservation d'une voiture ne peux pas dépasser 30 jours");
+            }
+
             reservationDao.create(reservation);
+
+
         } catch (DaoException e) {
             throw new ServiceException("Échec de la création de  la reservation : " + reservation.toString(), e);
         }

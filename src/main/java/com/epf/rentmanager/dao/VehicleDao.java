@@ -20,7 +20,6 @@ public class VehicleDao {
 	private static final String CREATE_VEHICLE_QUERY = "INSERT INTO Vehicle(constructeur, modele, nb_places) VALUES(?, ?, ?);";
 	private static final String DELETE_RESERVATIONS_FOR_VEHICLE_QUERY = "DELETE FROM Reservation WHERE vehicle_id = ?;";
 	private static final String DELETE_VEHICLE_QUERY = "DELETE FROM Vehicle WHERE id=?;";
-
 	private static final String FIND_VEHICLE_QUERY = "SELECT id, constructeur, modele, nb_places FROM Vehicle WHERE id=?;";
 	private static final String FIND_VEHICLES_QUERY = "SELECT id, constructeur, modele, nb_places FROM Vehicle;";
 	private static final String COUNT_VEHICLES_QUERY = "SELECT COUNT(*) FROM Vehicle;" ;
@@ -31,8 +30,7 @@ public class VehicleDao {
 	public long create(Vehicle vehicle) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
-			PreparedStatement ps =
-					connection.prepareStatement(CREATE_VEHICLE_QUERY);
+			PreparedStatement ps = connection.prepareStatement(CREATE_VEHICLE_QUERY);
 
 			ps.setString(1, vehicle.getConstructeur());
 			ps.setString(2, vehicle.getModele());
@@ -50,6 +48,7 @@ public class VehicleDao {
 
 			ps.close();
 			connection.close();
+
 		} catch (SQLException e) {
 			throw new DaoException("Échec de la création du véhicule : " + vehicle.toString(), e);
 		}
@@ -61,11 +60,16 @@ public class VehicleDao {
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement ps_reservation = connection.prepareStatement(DELETE_RESERVATIONS_FOR_VEHICLE_QUERY);
 			ps_reservation.setInt(1,vehicle.getId());
+
 			ps_reservation.executeUpdate();
 
 			PreparedStatement ps_client = connection.prepareStatement(DELETE_VEHICLE_QUERY);
 			ps_client.setInt(1,vehicle.getId());
 			int affectedRows = ps_client.executeUpdate();
+
+			ps_reservation.close();
+			ps_client.close();
+			connection.close();
 			return affectedRows;
 
 		} catch (SQLException e) {
@@ -76,12 +80,9 @@ public class VehicleDao {
 	public Vehicle findById(int id) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
-			PreparedStatement ps =
-					connection.prepareStatement(FIND_VEHICLE_QUERY);
+			PreparedStatement ps = connection.prepareStatement(FIND_VEHICLE_QUERY);
 
 			ps.setInt(1, id);
-
-			//ps.execute();
 
 			ResultSet resultSet = ps.executeQuery();
 
@@ -116,7 +117,7 @@ public class VehicleDao {
 				Integer nb_places = resultSet.getInt("nb_places");
 				listeVehicles.add(new Vehicle(id,constructeur,modele,nb_places));
 			}
-			resultSet.close();
+
 			ps.close();
 			connection.close();
 
@@ -138,7 +139,6 @@ public class VehicleDao {
 				count = resultSet.getInt(1);
 			}
 
-			resultSet.close();
 			ps.close();
 			connection.close();
 		} catch (SQLException e) {
@@ -163,8 +163,10 @@ public class VehicleDao {
 				LocalDate naissance = resultSet.getDate("naissance").toLocalDate(); // Assurez-vous que la conversion de java.sql.Date à LocalDate est correcte
 				listeClients.add(new Client(id, nom, prenom, email, naissance));
 			}
-			return listeClients;
 
+			ps.close();
+			connection.close();
+			return listeClients;
 		} catch (Exception e) {
 			throw new DaoException("Échec de la récupération des clients ayant réservé le véhicule " + vehicle.getId(), e);
 		}
@@ -180,6 +182,10 @@ public class VehicleDao {
 			ps.setInt(4, vehicle.getId());
 
 			int updatedRows = ps.executeUpdate();
+
+			ps.close();
+			connection.close();
+
 			return updatedRows > 0;
 		} catch (SQLException e) {
 			throw new DaoException("Échec de la mise à jour du véhicule " + vehicle.getId(), e);
